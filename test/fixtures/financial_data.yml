@@ -1,0 +1,9 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  num_theaters: 
+  gross_earnings: 9.99
+
+two:
+  num_theaters: 
+  gross_earnings: 9.99
