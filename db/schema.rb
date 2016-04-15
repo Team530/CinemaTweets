@@ -11,17 +11,19 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160415035627) do
+ActiveRecord::Schema.define(version: 20160415233609) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "financial_data", force: :cascade do |t|
     t.integer  "num_theaters"
-    t.decimal  "gross_earnings"
+    t.integer  "gross_earnings"
     t.integer  "movie_id"
     t.datetime "created_at",     null: false
     t.datetime "updated_at",     null: false
+    t.datetime "date"
+    t.integer  "daily_gross"
   end
 
   add_index "financial_data", ["movie_id"], name: "index_financial_data_on_movie_id", using: :btree
