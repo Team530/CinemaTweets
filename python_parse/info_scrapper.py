@@ -26,6 +26,7 @@ class ScrapeInfo(object):
     movie_data = {}
     cleaned_movie_data = {}
     year = datetime.datetime.now().year
+    GOOGLE_SEARCH_STRING = "https://www.google.com/search?q="
     def __init__(self):
         self.driver = webdriver.Firefox()
         self.driver.implicitly_wait(3)
@@ -98,7 +99,25 @@ class ScrapeInfo(object):
 
     def getMovieInfo(self):
         for movie_title in self.movie_data:
-            print("HERE")
+            time.sleep(3)
+            search_query = self.GOOGLE_SEARCH_STRING + str(movie_title) + " IMDb"
+            self.driver.get(search_query)
+            self.driver.implicitly_wait(10)
+            soup_data = self.getSoupData()
+            div_data = soup_data.findAll('div', class_="rc")
+            if div_data is None:
+                print("No data found for " + str(movie_title))
+                continue
+            else:
+                first_div = div_data[0]
+                links = first_div.findAll('a', href=True)
+                if links is None:
+                    print("Not able to grab data for " + str(movie_title))
+                else:
+                    link = links[0]
+                    link_string = link['href']
+                    self.driver.get(link['href'])
+                    self.driver.implicitly_wait(10)
 
     def parsePage(self):
         content = self.driver.page_source
