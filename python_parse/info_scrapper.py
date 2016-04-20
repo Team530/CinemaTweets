@@ -1,10 +1,12 @@
 #!bin/python3
 
+import datetime, time
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
-
-
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class ScrapeInfo(object):
@@ -23,6 +25,7 @@ class ScrapeInfo(object):
     #Pos 8 = Number of Days Released
     movie_data = {}
     cleaned_movie_data = {}
+    year = datetime.datetime.now().year
     def __init__(self):
         self.driver = webdriver.Firefox()
         self.driver.implicitly_wait(3)
@@ -31,16 +34,14 @@ class ScrapeInfo(object):
 
 
     def main(self):
-        soup_data = self.getChartData()
+        soup_data = self.getSoupData()
         self.parseData(soup_data)
-        self.driver.get("http://www.imdb.com/")
-        self.driver.implicitly_wait(10)
         self.getMovieInfo()
         #print(self.movie_data)
         #self.driver_movie_info.close()
         self.driver.close()
 
-    def getChartData(self):
+    def getSoupData(self):
         content = self.driver.page_source
         soup = BeautifulSoup(content, "html.parser")
         return soup
@@ -50,7 +51,14 @@ class ScrapeInfo(object):
 
     def stripForNumOnly(self, text):
         stripped_text = self.removeWhitSpace(text)
-        ret = ''.join(filter(lambda x: x.isdigit(), stripped_text))
+        ret = ''.join(filter(lambda x: x.isdigit() , stripped_text))
+        if not ret:
+            return "-"
+        return ret
+
+    def stripForPercent(self, text):
+        stripped_text = self.removeWhitSpace(text)
+        ret = ''.join(filter(lambda x: x.isdigit() or x is "+" or x is "-", stripped_text))
         if not ret:
             return "-"
         return ret
@@ -75,7 +83,7 @@ class ScrapeInfo(object):
             movie_name     = self.removeWhitSpace(data[2].text)
             distributor    = self.removeWhitSpace(data[3].text)
             prev_day_gross = self.stripForNumOnly(data[4].text)
-            change         = self.stripForNumOnly(data[5].text)
+            change         = self.stripForPercent(data[5].text)
             num_theaters   = self.stripForNumOnly(data[6].text)
             per_theater    = self.stripForNumOnly(data[7].text)
             total_gross    = self.stripForNumOnly(data[8].text)
@@ -90,11 +98,7 @@ class ScrapeInfo(object):
 
     def getMovieInfo(self):
         for movie_title in self.movie_data:
-            print(movie_title)
-            inputElement = self.driver.find_element_by_id("navbar-query")
-            inputElement.send_keys(movie_title)
-            inputElement.send_keys(Keys.ENTER)
-            self.parsePage()
+            print("HERE")
 
     def parsePage(self):
         content = self.driver.page_source
@@ -107,7 +111,33 @@ class ScrapeInfo(object):
 
 if __name__ == "__main__":
     run_instance = ScrapeInfo()
-    try:
-        run_instance.main()
-    except:
-        run_instance.close()
+    #run_instance.main()
+    #try:
+    run_instance.main()
+    #except:
+    #    run_instance.close()
+
+
+"""
+        for movie_title in self.movie_data:
+            self.driver.get("https://www.google.com/?gws_rd=ssl")
+            self.driver.implicitly_wait(10)
+            print(self.driver.page_source)
+
+            inputElement = self.driver.find_element_by_id("lst-ib")
+            search_term = str(movie_title) + " IMDb " + str(self.year)
+            inputElement.send_keys(search_term)
+            inputElement.send_keys(Keys.ENTER)
+            time.sleep(10)
+            soup_data = self.getSoupData()
+            print(self.driver.page_source)
+            print()
+            result_class = soup_data.find_all("div", _class="rc")
+            print(result_class)
+            print(result_class.find_all("a"))
+            print()
+            time.sleep(10)
+            #result.find_element_by_xpath("./div/h3/a").click()
+            #print(result)
+            #self.parsePage()
+    """
