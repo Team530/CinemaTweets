@@ -28,7 +28,9 @@ class ScrapeInfo(object):
     year = datetime.datetime.now().year
     GOOGLE_SEARCH_STRING = "https://www.google.com/search?q="
     def __init__(self):
-        self.driver = webdriver.Firefox()
+
+        profile = webdriver.FirefoxProfile("/home/christopher/.mozilla/firefox/m3hrfqdg.default")
+        self.driver = webdriver.Firefox(profile)
         self.driver.implicitly_wait(3)
         self.driver.get("http://www.the-numbers.com/daily-box-office-chart")
         self.driver.implicitly_wait(10)
@@ -56,6 +58,10 @@ class ScrapeInfo(object):
         if not ret:
             return "-"
         return ret
+
+    def stripTime(self, text):
+        stripped_text = self.removeWhitSpace(text)
+        return stripped_text
 
     def stripForPercent(self, text):
         stripped_text = self.removeWhitSpace(text)
@@ -100,24 +106,39 @@ class ScrapeInfo(object):
     def getMovieInfo(self):
         for movie_title in self.movie_data:
             time.sleep(3)
-            search_query = self.GOOGLE_SEARCH_STRING + str(movie_title) + " IMDb"
+            search_query = self.GOOGLE_SEARCH_STRING + str(movie_title) + " IMDb " + str(self.year)
             self.driver.get(search_query)
             self.driver.implicitly_wait(10)
             soup_data = self.getSoupData()
             div_data = soup_data.findAll('div', class_="rc")
-            if div_data is None:
+            if not div_data:
                 print("No data found for " + str(movie_title))
                 continue
             else:
                 first_div = div_data[0]
                 links = first_div.findAll('a', href=True)
-                if links is None:
+                if not links:
                     print("Not able to grab data for " + str(movie_title))
                 else:
                     link = links[0]
                     link_string = link['href']
-                    self.driver.get(link['href'])
+                    self.driver.get(link_string)
                     self.driver.implicitly_wait(10)
+                    soup_data = self.getSoupData()
+                    IMDb_movie_title = soup_data.find(itemprop="name").get_text()
+                    movie_classificaiton = soup_data.find(itemprop="contentRating")['content']
+                    #year = soup.find(itemprop="name").get_text()
+                    movie_duration = self.stripTime(soup_data.find(itemprop="duration").get_text())
+                    movie_genres = soup_data.findAll('span',itemprop="genre")
+                    if not IMDb_movie_title:
+                        print("Unable to get movie title")
+                        continue
+                    print(IMDb_movie_title)
+                    print(movie_classificaiton)
+                    print(movie_duration)
+                    print(movie_genres)
+                    print()
+
 
     def parsePage(self):
         content = self.driver.page_source
