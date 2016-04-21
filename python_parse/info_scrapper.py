@@ -8,6 +8,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
+MONTHS = {}
 
 class ScrapeInfo(object):
 
@@ -25,16 +26,23 @@ class ScrapeInfo(object):
     #Pos 8 = Number of Days Released
     movie_data = {}
     cleaned_movie_data = {}
-    year = datetime.datetime.now().year
+    cur_search_date = datetime.datetime.now() - datetime.timedelta(1)
     GOOGLE_SEARCH_STRING = "https://www.google.com/search?q="
     def __init__(self):
 
         profile = webdriver.FirefoxProfile("/home/christopher/.mozilla/firefox/m3hrfqdg.default")
         self.driver = webdriver.Firefox(profile)
         self.driver.implicitly_wait(3)
-        self.driver.get("http://www.the-numbers.com/daily-box-office-chart")
+        #http://www.the-numbers.com/box-office-chart/daily/2016/04/19
+        base = str("http://www.the-numbers.com/box-office-chart/daily/" +
+                    str(self.cur_search_date.year) + "/" +
+                    str(self.formatDate(self.cur_search_date.month)) + "/" +
+                    str(self.formatDate(self.cur_search_date.day)))
+        self.driver.get(base)
         self.driver.implicitly_wait(10)
 
+    def formatDate(self, date):
+        return '{:02d}'.format(date)
 
     def main(self):
         soup_data = self.getSoupData()
@@ -103,10 +111,23 @@ class ScrapeInfo(object):
                            "total_gross" : total_gross, "num_days" : num_days}
             self.movie_data[movie_name] = movie_info
 
+    def stripDate(self, text):
+        date = text.split
+        ret = []
+        for ele in date:
+            if ele.isdigit():
+                ret.append(ele)
+            else if ele in month:
+                ret.append(MONTHS[ele])
+        return ret
+
     def getMovieInfo(self):
         for movie_title in self.movie_data:
             time.sleep(3)
-            search_query = self.GOOGLE_SEARCH_STRING + str(movie_title) + " IMDb " + str(self.year)
+            search_query = (self.GOOGLE_SEARCH_STRING +
+                            str(movie_title) + " IMDb " +
+                            str(self.cur_search_date.year))
+
             self.driver.get(search_query)
             self.driver.implicitly_wait(10)
             soup_data = self.getSoupData()
@@ -127,18 +148,40 @@ class ScrapeInfo(object):
                     soup_data = self.getSoupData()
                     IMDb_movie_title = soup_data.find(itemprop="name").get_text()
                     movie_classificaiton = soup_data.find(itemprop="contentRating")['content']
-                    #year = soup.find(itemprop="name").get_text()
                     movie_duration = self.stripTime(soup_data.find(itemprop="duration").get_text())
                     movie_genres = soup_data.findAll('span',itemprop="genre")
+                    budget_and_release_div = soup_data.findAll('div', class_="txt-block")
+                    budget = "N/A"
+                    release_date = "N/A"
                     if not IMDb_movie_title:
                         print("Unable to get movie title")
                         continue
-                    print(IMDb_movie_title)
-                    print(movie_classificaiton)
-                    print(movie_duration)
-                    print(movie_genres)
-                    print()
+                    if not movie_classificaiton:
+                        movie_classificaiton = "N\A"
+                    if movie_genres:
+                        movie_genres = soup_data.findAll(itemprop="genre")
+                        movie_genres_parsed = [ ele.get_text() for ele in movie_genres]
+                    if budget_and_release_div:
 
+                        for ele in budget_and_release_div:
+                            for header_tag in ele.findAll('h4'):
+                                if self.removeWhitSpace(header_tag.text) == "Budget:":
+                                    budget = self.stripForNumOnly(header_tag.next_sibling)
+                                if self.removeWhitSpace(header_tag.text) == "Release Date:":
+                                    release_date = self.stripDate(header_tag.next_sibling)
+
+
+                    print()
+                    print("Extracting information for: "+ IMDb_movie_title)
+                    movie_info = self.movie_data[movie_title]
+                    movie_info["genre"] = movie_genres_parsed
+                    movie_info["run_time"] = movie_duration
+                    #movie_info["release_date"] =
+
+                    self.cleaned_movie_data[IMDb_movie_title] = movie_info
+                    #print(self.cleaned_movie_data[IMDb_movie_title])
+                    print()
+                    time.sleep(5)
 
     def parsePage(self):
         content = self.driver.page_source
@@ -156,28 +199,3 @@ if __name__ == "__main__":
     run_instance.main()
     #except:
     #    run_instance.close()
-
-
-"""
-        for movie_title in self.movie_data:
-            self.driver.get("https://www.google.com/?gws_rd=ssl")
-            self.driver.implicitly_wait(10)
-            print(self.driver.page_source)
-
-            inputElement = self.driver.find_element_by_id("lst-ib")
-            search_term = str(movie_title) + " IMDb " + str(self.year)
-            inputElement.send_keys(search_term)
-            inputElement.send_keys(Keys.ENTER)
-            time.sleep(10)
-            soup_data = self.getSoupData()
-            print(self.driver.page_source)
-            print()
-            result_class = soup_data.find_all("div", _class="rc")
-            print(result_class)
-            print(result_class.find_all("a"))
-            print()
-            time.sleep(10)
-            #result.find_element_by_xpath("./div/h3/a").click()
-            #print(result)
-            #self.parsePage()
-    """
