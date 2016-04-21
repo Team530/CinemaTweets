@@ -62,7 +62,8 @@ class ScrapeInfo(object):
             self.parseData(soup_data)
             self.getMovieInfo()
             self.goBackADay()
-            self.goToDate()
+            start = self.goToDate()
+            self.driver.get(start)
             count = count + 1
             self.movie_data.clear()
             self.cleaned_movie_data.clear()
@@ -82,10 +83,6 @@ class ScrapeInfo(object):
         if not ret:
             return "-"
         return ret
-
-    def stripTime(self, text):
-        stripped_text = self.removeWhitSpace(text)
-        return stripped_text
 
     def stripForPercent(self, text):
         stripped_text = self.removeWhitSpace(text)
@@ -162,7 +159,7 @@ class ScrapeInfo(object):
     def getMovieInfo(self):
         counter = 1
         for movie_title in self.movie_data:
-            print("Item number: " + str(counter))
+            print("Item number: " + str(counter) + " for " + movie_title)
             time.sleep(3)
             search_query = (self.GOOGLE_SEARCH_STRING +
                             str(movie_title) + " IMDb " +
@@ -188,7 +185,7 @@ class ScrapeInfo(object):
                     soup_data = self.getSoupData()
                     IMDb_movie_title = soup_data.find(itemprop="name").get_text()
                     movie_classificaiton = soup_data.find(itemprop="contentRating")['content']
-                    movie_duration = self.stripTime(soup_data.find(itemprop="duration").get_text())
+                    movie_duration = self.convertToMins(soup_data.find(itemprop="duration").get_text())
                     movie_genres = soup_data.findAll('span',itemprop="genre")
                     budget_and_release_div = soup_data.findAll('div', class_="txt-block")
                     budget = "N/A"
@@ -221,7 +218,7 @@ class ScrapeInfo(object):
                     print(self.cleaned_movie_data[IMDb_movie_title])
                     print()
                     counter = counter + 1
-                    time.sleep(5)
+                    time.sleep(2)
 
     def parsePage(self):
         content = self.driver.page_source
