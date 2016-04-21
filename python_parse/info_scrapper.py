@@ -1,6 +1,6 @@
 #!bin/python3
 
-import datetime, time
+import datetime, time, sys
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -8,7 +8,9 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-MONTHS = {}
+MONTHS = {'January' : 1, 'February' : 2, 'March' : 3, 'April' : 4, 'May' : 5,
+          'June' : 5, 'July' : 6, 'August' : 8, 'September' : 9,
+          "October" : 10, 'November' : 11, 'December' : 12}
 
 class ScrapeInfo(object):
 
@@ -112,12 +114,12 @@ class ScrapeInfo(object):
             self.movie_data[movie_name] = movie_info
 
     def stripDate(self, text):
-        date = text.split
+        date = text.split()
         ret = []
         for ele in date:
             if ele.isdigit():
                 ret.append(ele)
-            else if ele in month:
+            elif ele in MONTHS:
                 ret.append(MONTHS[ele])
         return ret
 
@@ -126,7 +128,7 @@ class ScrapeInfo(object):
             time.sleep(3)
             search_query = (self.GOOGLE_SEARCH_STRING +
                             str(movie_title) + " IMDb " +
-                            str(self.cur_search_date.year))
+                            str(self.cur_search_date.year) +" movie")
 
             self.driver.get(search_query)
             self.driver.implicitly_wait(10)
@@ -153,33 +155,32 @@ class ScrapeInfo(object):
                     budget_and_release_div = soup_data.findAll('div', class_="txt-block")
                     budget = "N/A"
                     release_date = "N/A"
+                    movie_genres_parsed = []
                     if not IMDb_movie_title:
                         print("Unable to get movie title")
                         continue
                     if not movie_classificaiton:
                         movie_classificaiton = "N\A"
                     if movie_genres:
-                        movie_genres = soup_data.findAll(itemprop="genre")
-                        movie_genres_parsed = [ ele.get_text() for ele in movie_genres]
+                        for ele in movie_genres:
+                            movie_genres_parsed.append(self.removeWhitSpace(ele.text))
                     if budget_and_release_div:
-
                         for ele in budget_and_release_div:
                             for header_tag in ele.findAll('h4'):
                                 if self.removeWhitSpace(header_tag.text) == "Budget:":
-                                    budget = self.stripForNumOnly(header_tag.next_sibling)
+                                    budget = self.stripForNumOnly(str(header_tag.next_sibling))
                                 if self.removeWhitSpace(header_tag.text) == "Release Date:":
-                                    release_date = self.stripDate(header_tag.next_sibling)
+                                    release_date = self.stripDate(str(header_tag.next_sibling))
 
-
-                    print()
                     print("Extracting information for: "+ IMDb_movie_title)
                     movie_info = self.movie_data[movie_title]
                     movie_info["genre"] = movie_genres_parsed
                     movie_info["run_time"] = movie_duration
-                    #movie_info["release_date"] =
+                    movie_info["budget"] = budget
+                    movie_info["release_date"] = release_date
 
                     self.cleaned_movie_data[IMDb_movie_title] = movie_info
-                    #print(self.cleaned_movie_data[IMDb_movie_title])
+                    print(self.cleaned_movie_data[IMDb_movie_title])
                     print()
                     time.sleep(5)
 
@@ -195,7 +196,8 @@ class ScrapeInfo(object):
 if __name__ == "__main__":
     run_instance = ScrapeInfo()
     #run_instance.main()
-    #try:
-    run_instance.main()
-    #except:
-    #    run_instance.close()
+    try:
+        run_instance.main()
+    except:
+        print("Unexpected error:", sys.exc_info()[0])
+        run_instance.close()
