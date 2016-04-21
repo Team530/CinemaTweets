@@ -36,22 +36,36 @@ class ScrapeInfo(object):
         self.driver = webdriver.Firefox(profile)
         self.driver.implicitly_wait(3)
         #http://www.the-numbers.com/box-office-chart/daily/2016/04/19
-        base = str("http://www.the-numbers.com/box-office-chart/daily/" +
+        self.cur_search_date = self.cur_search_date - datetime.timedelta(1)
+        start = self.goToDate()
+        self.driver.get(start)
+        self.driver.implicitly_wait(10)
+
+    def goBackADay(self):
+        self.cur_search_date = self.cur_search_date  - datetime.timedelta(1)
+
+    def goToDate(self):
+        return str("http://www.the-numbers.com/box-office-chart/daily/" +
                     str(self.cur_search_date.year) + "/" +
                     str(self.formatDate(self.cur_search_date.month)) + "/" +
                     str(self.formatDate(self.cur_search_date.day)))
-        self.driver.get(base)
-        self.driver.implicitly_wait(10)
 
     def formatDate(self, date):
         return '{:02d}'.format(date)
 
     def main(self):
-        soup_data = self.getSoupData()
-        self.parseData(soup_data)
-        self.getMovieInfo()
-        #print(self.movie_data)
-        #self.driver_movie_info.close()
+        count = 0
+        while count < 4:
+
+            print("Parsing Data for: " + self.cur_search_date.strftime("%d/%m/%Y"))
+            soup_data = self.getSoupData()
+            self.parseData(soup_data)
+            self.getMovieInfo()
+            self.goBackADay()
+            self.goToDate()
+            count = count + 1
+            self.movie_data.clear()
+            self.cleaned_movie_data.clear()
         self.driver.close()
 
     def getSoupData(self):
@@ -80,8 +94,40 @@ class ScrapeInfo(object):
             return "-"
         return ret
 
-    def parseData(self, soup_data):
+    def convertToMins(self, time):
+        time_array = time.split()
 
+        seen_min = False
+        seen_hour = False
+
+        min_time = 0
+        hour_time = 0
+        for ele in time_array:
+            if "h" in ele:
+                seen_hour = True
+                hour_time = self.stripForNumOnly(ele)
+            elif "min" in ele:
+                seen_min = True
+                min_time = self.stripForNumOnly(ele)
+
+        if seen_min == True and seen_hour == False:
+            return min_time
+        if seen_min == True and seen_hour == True:
+            return int(min_time) + int(60*int(hour_time))
+        if seen_min == False and seen_hour == True:
+            return int(60*int(hour_time))
+
+    def stripDate(self, text):
+        date = text.split()
+        ret = []
+        for ele in date:
+            if ele.isdigit():
+                ret.append(ele)
+            elif ele in MONTHS:
+                ret.append(MONTHS[ele])
+        return ret
+
+    def parseData(self, soup_data):
         for r in soup_data.find_all('tr')[2:-1]:
             data = r.find_all('td')
             #Data comes as an array
@@ -113,18 +159,10 @@ class ScrapeInfo(object):
                            "total_gross" : total_gross, "num_days" : num_days}
             self.movie_data[movie_name] = movie_info
 
-    def stripDate(self, text):
-        date = text.split()
-        ret = []
-        for ele in date:
-            if ele.isdigit():
-                ret.append(ele)
-            elif ele in MONTHS:
-                ret.append(MONTHS[ele])
-        return ret
-
     def getMovieInfo(self):
+        counter = 1
         for movie_title in self.movie_data:
+            print("Item number: " + str(counter))
             time.sleep(3)
             search_query = (self.GOOGLE_SEARCH_STRING +
                             str(movie_title) + " IMDb " +
@@ -182,6 +220,7 @@ class ScrapeInfo(object):
                     self.cleaned_movie_data[IMDb_movie_title] = movie_info
                     print(self.cleaned_movie_data[IMDb_movie_title])
                     print()
+                    counter = counter + 1
                     time.sleep(5)
 
     def parsePage(self):
@@ -201,3 +240,4 @@ if __name__ == "__main__":
     except:
         print("Unexpected error:", sys.exc_info()[0])
         run_instance.close()
+        raise
