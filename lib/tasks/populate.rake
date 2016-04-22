@@ -18,11 +18,11 @@ namespace :db do
             movie_file.each_line do |line|
                if line.blank?
                   unless Movie.exists?(name: m_n)
-                     r_d = date.split(/\s*-\s*/)
+                     r_d = r_d.split(/\s*-\s*/)
                      Movie.create(name: m_n,
-                                  r_d: DateTime.new(r_d[0].to_i,
-                                                    r_d[1].to_i,
-                                                    r_d[2].to_i),
+                                  release_date: DateTime.new(r_d[0].to_i,
+                                                             r_d[1].to_i,
+                                                             r_d[2].to_i),
                                  genre: genre,
                                  MPAA_rating: m_r).valid?
                   end
