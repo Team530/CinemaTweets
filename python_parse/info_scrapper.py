@@ -1,6 +1,6 @@
 #!bin/python3
 
-import datetime, time, sys
+import datetime, time, sys, traceback, logging
 from bs4 import BeautifulSoup
 from selenium import webdriver
 from selenium.webdriver.common.by import By
@@ -56,11 +56,13 @@ class ScrapeInfo(object):
     def printOutToFile(self):
         movie_info_file_name = "movie_info_file_" + self.cur_search_date.strftime("%d-%m-%Y")
         financial_info_file_name = "financial_info_file_" + self.cur_search_date.strftime("%d-%m-%Y")
-        
+        f_m = open(movie_info_file_name, 'w')
+        f_f = open(financial_info_file_name, 'w')
+
 
     def main(self):
         count = 0
-        while count < 4:
+        while count < 1:
 
             print("Parsing Data for: " + self.cur_search_date.strftime("%d/%m/%Y"))
             soup_data = self.getSoupData()
@@ -164,67 +166,83 @@ class ScrapeInfo(object):
 
     def getMovieInfo(self):
         counter = 1
+        error_counter = 1;
         for movie_title in self.movie_data:
-            print("Item number: " + str(counter) + " for " + movie_title)
-            time.sleep(3)
-            search_query = (self.GOOGLE_SEARCH_STRING +
-                            str(movie_title) + " IMDb " +
-                            str(self.cur_search_date.year) +" movie")
+            try:
+                print("Item number: " + str(counter) + " for " + movie_title)
+                time.sleep(3)
+                search_query = (self.GOOGLE_SEARCH_STRING +
+                                str(movie_title) + " IMDb " +
+                                str(self.cur_search_date.year) +" movie")
 
-            self.driver.get(search_query)
-            self.driver.implicitly_wait(10)
-            soup_data = self.getSoupData()
-            div_data = soup_data.findAll('div', class_="rc")
-            if not div_data:
-                print("No data found for " + str(movie_title))
-                continue
-            else:
-                first_div = div_data[0]
-                links = first_div.findAll('a', href=True)
-                if not links:
-                    print("Not able to grab data for " + str(movie_title))
+                self.driver.get(search_query)
+                self.driver.implicitly_wait(10)
+                soup_data = self.getSoupData()
+                div_data = soup_data.findAll('div', class_="rc")
+                if not div_data:
+                    print("No data found for " + str(movie_title))
+                    continue
                 else:
-                    link = links[0]
-                    link_string = link['href']
-                    self.driver.get(link_string)
-                    self.driver.implicitly_wait(10)
-                    soup_data = self.getSoupData()
-                    IMDb_movie_title = soup_data.find(itemprop="name").get_text()
-                    movie_classificaiton = soup_data.find(itemprop="contentRating")['content']
-                    movie_duration = self.convertToMins(soup_data.find(itemprop="duration").get_text())
-                    movie_genres = soup_data.findAll('span',itemprop="genre")
-                    budget_and_release_div = soup_data.findAll('div', class_="txt-block")
-                    budget = "N/A"
-                    release_date = "N/A"
-                    movie_genres_parsed = []
-                    if not IMDb_movie_title:
-                        print("Unable to get movie title")
-                        continue
-                    if not movie_classificaiton:
-                        movie_classificaiton = "N\A"
-                    if movie_genres:
-                        for ele in movie_genres:
-                            movie_genres_parsed.append(self.removeWhitSpace(ele.text))
-                    if budget_and_release_div:
-                        for ele in budget_and_release_div:
-                            for header_tag in ele.findAll('h4'):
-                                if self.removeWhitSpace(header_tag.text) == "Budget:":
-                                    budget = self.stripForNumOnly(str(header_tag.next_sibling))
-                                if self.removeWhitSpace(header_tag.text) == "Release Date:":
-                                    release_date = self.stripDate(str(header_tag.next_sibling))
+                    first_div = div_data[0]
+                    links = first_div.findAll('a', href=True)
+                    if not links:
+                        print("Not able to grab data for " + str(movie_title))
+                    else:
+                        link = links[0]
+                        link_string = link['href']
+                        self.driver.get(link_string)
+                        self.driver.implicitly_wait(10)
+                        soup_data = self.getSoupData()
+                        IMDb_movie_title = soup_data.find(itemprop="name").get_text()
+                        movie_classificaiton = soup_data.find(itemprop="contentRating")['content']
+                        movie_duration = self.convertToMins(soup_data.find(itemprop="duration").get_text())
+                        movie_genres = soup_data.findAll('span',itemprop="genre")
+                        budget_and_release_div = soup_data.findAll('div', class_="txt-block")
+                        budget = "N/A"
+                        release_date = "N/A"
+                        movie_genres_parsed = []
+                        if not IMDb_movie_title:
+                            print("Unable to get movie title")
+                            continue
+                        if not movie_classificaiton:
+                            movie_classificaiton = "N\A"
+                        if movie_genres:
+                            for ele in movie_genres:
+                                movie_genres_parsed.append(self.removeWhitSpace(ele.text))
+                        if budget_and_release_div:
+                            for ele in budget_and_release_div:
+                                for header_tag in ele.findAll('h4'):
+                                    if self.removeWhitSpace(header_tag.text) == "Budget:":
+                                        budget = self.stripForNumOnly(str(header_tag.next_sibling))
+                                    if self.removeWhitSpace(header_tag.text) == "Release Date:":
+                                        release_date = self.stripDate(str(header_tag.next_sibling))
 
-                    print("Extracting information for: "+ IMDb_movie_title)
-                    movie_info = self.movie_data[movie_title]
-                    movie_info["genre"] = movie_genres_parsed
-                    movie_info["run_time"] = movie_duration
-                    movie_info["budget"] = budget
-                    movie_info["release_date"] = release_date
+                        print("Extracting information for: "+ IMDb_movie_title)
+                        movie_info = self.movie_data[movie_title]
+                        movie_info["genre"] = movie_genres_parsed
+                        movie_info["run_time"] = movie_duration
+                        movie_info["budget"] = budget
+                        movie_info["release_date"] = release_date
 
-                    self.cleaned_movie_data[IMDb_movie_title] = movie_info
-                    print(self.cleaned_movie_data[IMDb_movie_title])
-                    print()
-                    counter = counter + 1
-                    time.sleep(2)
+                        self.cleaned_movie_data[IMDb_movie_title] = movie_info
+                        print(self.cleaned_movie_data[IMDb_movie_title])
+                        print()
+                        counter = counter + 1
+                        time.sleep(2)
+            except ConnectionRefusedError:
+                quit(0)
+            except Exception as e:
+                print("Unexpected Error")
+                print("<-----------Error Logs---------->")
+                print("Error trying to search for: " + movie_title)
+                print("Google Generated Page: " + search_query)
+                print("IMDb Google Linked Page: " + link_string)
+                print("This is Error Numer: " + str(error_counter))
+                logging.error(traceback.format_exc())
+                print()
+                error_counter = error_counter + 1
+                if error_counter == 20:
+                    raise
 
     def parsePage(self):
         content = self.driver.page_source
