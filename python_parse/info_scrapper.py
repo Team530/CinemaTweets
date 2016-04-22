@@ -55,25 +55,27 @@ class ScrapeInfo(object):
 
 
     def printOutToFile(self):
-        movie_info_file_name = "movie_info_file_" + self.cur_search_date.strftime("%d-%m-%Y")
-        financial_info_file_name = "financial_info_file_" + self.cur_search_date.strftime("%d-%m-%Y")
+        movie_info_file_name = ("./movie_data_out/movie_info_file_" +
+                                 self.cur_search_date.strftime("%d-%m-%Y"))
+        financial_info_file_name = ("./movie_fin_data_out/financial_info_file_"
+                                    + self.cur_search_date.strftime("%d-%m-%Y"))
         f_m = open(movie_info_file_name, 'w')
         f_f = open(financial_info_file_name, 'w')
 
         for movie_name in self.cleaned_movie_data:
             movie_info = self.cleaned_movie_data[movie_name]
             f_m.write(movie_name + "\n")
-            f_m.write(movie_info['release_date'][2] + "-" +
-                      movie_info['release_date'][1] + "-" +
-                      movie_info['release_date'][0]+ "\n")
+            f_m.write(str(movie_info['release_date'][2]) + "-" +
+                      str(movie_info['release_date'][1]) + "-" +
+                      str(movie_info['release_date'][0]) + "\n")
             f_m.write(', '.join(str(x) for x in movie_info['genre'])  + "\n")
-            f_m.write(movie_info['MPAA_rating']  + "\n")
+            f_m.write(str(movie_info['MPAA_rating'])  + "\n")
             f_m.write("\n")
 
-            f_f.write(movie_info['num_theaters'] + "\n")
-            f_f.write(movie_info['gross'] + "\n")
+            f_f.write(str(movie_info['num_theaters']) + "\n")
+            f_f.write(str(movie_info['gross']) + "\n")
             f_f.write(movie_name + "\n")
-            f_f.write(movie_info['prev_day_gross'] + "\n")
+            f_f.write(str(movie_info['prev_day_gross']) + "\n")
             f_f.write("\n")
 
         f_m.close()
