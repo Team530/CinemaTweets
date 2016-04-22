@@ -53,17 +53,34 @@ class ScrapeInfo(object):
     def formatDate(self, date):
         return '{:02d}'.format(date)
 
+
     def printOutToFile(self):
         movie_info_file_name = "movie_info_file_" + self.cur_search_date.strftime("%d-%m-%Y")
         financial_info_file_name = "financial_info_file_" + self.cur_search_date.strftime("%d-%m-%Y")
         f_m = open(movie_info_file_name, 'w')
         f_f = open(financial_info_file_name, 'w')
 
+        for movie_name in self.cleaned_movie_data:
+            movie_info = self.cleaned_movie_data[movie_name]
+            f_m.write(movie_name + "\n")
+            f_m.write(movie_info['release_date'][2] + "-" +
+                      movie_info['release_date'][1] + "-" +
+                      movie_info['release_date'][0]+ "\n")
+            f_m.write(', '.join(str(x) for x in movie_info['genre'])  + "\n")
+            f_m.write(movie_info['MPAA_rating']  + "\n")
+            f_m.write("\n")
 
+            f_f.write(movie_info['num_theaters'] + "\n")
+            f_f.write(movie_info['gross'] + "\n")
+            f_f.write(movie_name + "\n")
+            f_f.write(movie_info['prev_day_gross'] + "\n")
+            f_f.write("\n")
+
+        f_m.close()
+        f_f.close()
     def main(self):
         count = 0
-        while count < 1:
-
+        while count < 3:
             print("Parsing Data for: " + self.cur_search_date.strftime("%d/%m/%Y"))
             soup_data = self.getSoupData()
             self.parseData(soup_data)
@@ -194,7 +211,11 @@ class ScrapeInfo(object):
                         self.driver.implicitly_wait(10)
                         soup_data = self.getSoupData()
                         IMDb_movie_title = soup_data.find(itemprop="name").get_text()
-                        movie_classificaiton = soup_data.find(itemprop="contentRating")['content']
+                        movie_classificaiton = "N/A"
+                        try:
+                            movie_classificaiton = soup_data.find(itemprop="contentRating")['content']
+                        except:
+                            pass
                         movie_duration = self.convertToMins(soup_data.find(itemprop="duration").get_text())
                         movie_genres = soup_data.findAll('span',itemprop="genre")
                         budget_and_release_div = soup_data.findAll('div', class_="txt-block")
@@ -204,8 +225,6 @@ class ScrapeInfo(object):
                         if not IMDb_movie_title:
                             print("Unable to get movie title")
                             continue
-                        if not movie_classificaiton:
-                            movie_classificaiton = "N\A"
                         if movie_genres:
                             for ele in movie_genres:
                                 movie_genres_parsed.append(self.removeWhitSpace(ele.text))
@@ -223,6 +242,7 @@ class ScrapeInfo(object):
                         movie_info["run_time"] = movie_duration
                         movie_info["budget"] = budget
                         movie_info["release_date"] = release_date
+                        movie_info["MPAA_rating"] = movie_classificaiton
 
                         self.cleaned_movie_data[IMDb_movie_title] = movie_info
                         print(self.cleaned_movie_data[IMDb_movie_title])
