@@ -53,6 +53,11 @@ class ScrapeInfo(object):
     def formatDate(self, date):
         return '{:02d}'.format(date)
 
+    def printOutToFile(self):
+        movie_info_file_name = "movie_info_file_" + self.cur_search_date.strftime("%d-%m-%Y")
+        financial_info_file_name = "financial_info_file_" + self.cur_search_date.strftime("%d-%m-%Y")
+        
+
     def main(self):
         count = 0
         while count < 4:
@@ -61,6 +66,7 @@ class ScrapeInfo(object):
             soup_data = self.getSoupData()
             self.parseData(soup_data)
             self.getMovieInfo()
+            self.printOutToFile()
             self.goBackADay()
             start = self.goToDate()
             self.driver.get(start)
