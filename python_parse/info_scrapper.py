@@ -36,7 +36,7 @@ class ScrapeInfo(object):
         self.driver = webdriver.Firefox(profile)
         self.driver.implicitly_wait(3)
         #http://www.the-numbers.com/box-office-chart/daily/2016/04/19
-        self.cur_search_date = self.cur_search_date - datetime.timedelta(1)
+        self.cur_search_date = self.cur_search_date
         start = self.goToDate()
         self.driver.get(start)
         self.driver.implicitly_wait(10)
@@ -76,13 +76,17 @@ class ScrapeInfo(object):
             f_f.write(str(movie_info['total_gross']) + "\n")
             f_f.write(movie_name + "\n")
             f_f.write(str(movie_info['prev_day_gross']) + "\n")
+            f_f.write( (str(self.cur_search_date.year) + "-" +
+                        str(self.formatDate(self.cur_search_date.month)) + "-" +
+                        str(self.formatDate(self.cur_search_date.day)))+ "\n")
             f_f.write("\n")
 
         f_m.close()
         f_f.close()
+
     def main(self):
         count = 0
-        while count < 3:
+        while count < 14:
             print("Parsing Data for: " + self.cur_search_date.strftime("%d/%m/%Y"))
             soup_data = self.getSoupData()
             self.parseData(soup_data)
