@@ -73,7 +73,7 @@ class ScrapeInfo(object):
             f_m.write("\n")
 
             f_f.write(str(movie_info['num_theaters']) + "\n")
-            f_f.write(str(movie_info['gross']) + "\n")
+            f_f.write(str(movie_info['total_gross']) + "\n")
             f_f.write(movie_name + "\n")
             f_f.write(str(movie_info['prev_day_gross']) + "\n")
             f_f.write("\n")
