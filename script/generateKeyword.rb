@@ -19,9 +19,10 @@ end
 
 
 def createKeyword(title, id)
-    if Keyword.where.not("keyword_phrase = ?", title)
+    unless Keyword.where("keyword_phrase = ? and movie_id = ?", title, id).exists?
 	puts title
-        Keyword.create(keyword_phrase:title, movie_id:id, is_hash_tag: false)
+	puts "where not"
+       # Keyword.create(keyword_phrase:title, movie_id:id, is_hash_tag: false)
     end
 end
 
