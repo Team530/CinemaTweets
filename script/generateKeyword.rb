@@ -22,7 +22,7 @@ def createKeyword(title, id)
     unless Keyword.where("keyword_phrase = ? and movie_id = ?", title, id).exists?
 	puts title
 	puts "where not"
-       # Keyword.create(keyword_phrase:title, movie_id:id, is_hash_tag: false)
+       Keyword.create(keyword_phrase:title, movie_id:id, is_hash_tag: false)
     end
 end
 
