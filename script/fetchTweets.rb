@@ -154,7 +154,7 @@ def iterateKeywords(daysago)
 	i = 0
     while $success
     	i = i + 1
-    	if i%5 == 0
+    	if i%10 == 0
     		sleep(60*3)
     	end
 
