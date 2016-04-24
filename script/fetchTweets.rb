@@ -1,6 +1,6 @@
 #twitter search
-require 'Twitter'
-require 'json'
+#require 'Twitter'
+#require 'json'
 
 $client1 = Twitter::REST::Client.new do |config|
   config.consumer_key        = "mK9czXCnYHya9ZK4bHrKdM6zu"
