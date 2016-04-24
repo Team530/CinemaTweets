@@ -30,6 +30,12 @@ $client4 = Twitter::REST::Client.new do |config|
   config.access_token_secret = "DTPR13vNtavI3Mh2FHMrn7A9sHh36SyhU37QqiEygJo83"
 end
 
+$client5 = Twitter::REST::Client.new do |config|
+  config.consumer_key        = "jQ04HPsp0pGMKL1M1ob7zWyFl"
+  config.consumer_secret     = "i4T7ppMoFVedwgkjPp24DyHTmud5DDmGz6a8pxqTVsCql6Edfn"
+  config.access_token        = "4915176383-anNnENADdtA5IkiQcZ1ovxv1McBad3tqCJZZFDU"
+  config.access_token_secret = "XMvBIsDD2WV4ePPFTqb237wd7NrKwCAlc2IOPVnSVoGpC"
+end
 
 $client = $client1
 
@@ -41,6 +47,8 @@ def switchClient
 		$client = $client3
 	elsif $client == $client3
 		$client = $client4
+	elsif $client == $client4
+		$client = $client5
 	else
 		$client = $client1
 	end
