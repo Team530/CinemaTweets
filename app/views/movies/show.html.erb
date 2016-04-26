@@ -13,14 +13,11 @@
 
 <tbody>
     <tr>
-        <td><% @movie.id %></td>
-        <td><% @movie.name %></td>
-        <td><% @movie.release_date %></td>
-        <td><% @movie.genre %></td>
-        <td><% @movie.MPAA_rating %></td>
+        <td><%= @movie.id %></td>
+        <td><%= @movie.name %></td>
+        <td><%= @movie.release_date %></td>
+        <td><%= @movie.genre %></td>
+        <td><%= @movie.MPAA_rating %></td>
     </tr>
 </tbody>
 </table>
-
-<%= link_to 'Edit', edit_movie_path(@movie) %> |
-<%= link_to 'Back', movies_path %>

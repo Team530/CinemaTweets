@@ -1,40 +1,39 @@
 <div class="container">
-<a href="/"><h4>Back To Main</h4></a>
-<p id="notice"><%= notice %></p>
+    <a href="/">
+        <h4>Back To Main</h4>
+    </a>
+    <p id="notice"><%= notice %></p>
 
-<h1>Listing Financial Data</h1>
+    <h1>Listing Financial Data</h1>
 
-<table>
-  <thead>
-    <tr>
-        <th>id</th>
-        <th>num_theaters</th>
-        <th>gross_earnings</th>
-        <th>movie_id</th>
-        <th>date</th>
-        <th>daily_gross</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+    <table>
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>num_theaters</th>
+                <th>gross_earnings</th>
+                <th>movie_id</th>
+                <th>date</th>
+                <th>daily_gross</th>
+                <th colspan="1"></th>
+            </tr>
+        </thead>
 
-  <tbody>
-    <% @financial_data.each do |financial_datum| %>
-      <tr>
-          <td><%= financial_datum.id %></td>
-          <td><%= financial_datum.num_theaters %></td>
-          <td><%= financial_datum.gross_earnings %></td>
-          <td><a href="/movies/<%= financial_datum.movie_id %>"><%= financial_datum.movie_id %></a></td>
-          <td><%= financial_datum.date %></td>
-          <td><%= financial_datum.daily_gross %></td>
-        <td><%= link_to 'Show', financial_datum %></td>
-        <td><%= link_to 'Edit', edit_financial_datum_path(financial_datum) %></td>
-        <td><%= link_to 'Destroy', financial_datum, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
-
-<br>
-
-<!-- <%= link_to 'New Financial datum', new_financial_datum_path %> -->
+        <tbody>
+            <% @financial_data.each do |financial_datum| %>
+            <tr>
+                <td><%= financial_datum.id %></td>
+                <td><%= financial_datum.num_theaters %></td>
+                <td><%= financial_datum.gross_earnings %></td>
+                <td>
+                    <a href="/movies/<%= financial_datum.movie_id %>"><%= financial_datum.movie_id %></a>
+                </td>
+                <td><%= financial_datum.date %></td>
+                <td><%= financial_datum.daily_gross %></td>
+                <td><%= link_to 'Show', financial_datum %></td>
+            </tr>
+            <% end %>
+        </tbody>
+    </table>
+    <br>
 </div>
