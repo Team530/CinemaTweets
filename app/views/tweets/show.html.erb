@@ -13,6 +13,8 @@
             <th>number_of_tweets</th>
             <th>keyword_id</th>
             <th>date</th>
+            <th>positive</th>
+            <th>negative</th>
         </tr>
     </thead>
 
@@ -25,7 +27,8 @@
             <td>
                 <a href="/keywords/<%= @tweet.keyword_id %>"><%= @tweet.keyword_id %></a>
             </td>
-            <td><%= @tweet.date %></td>
+            <td><%= @tweet.positive %></td>
+            <td><%= @tweet.negative %></td>
         </tr>
     </tbody>
 </table>
