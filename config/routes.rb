@@ -8,7 +8,7 @@ Rails.application.routes.draw do
   resources :financial_data
 
   # User gets redirected to root upon entering unknown routes
-    match '*path' => redirect('/'), via: :get
+  match '*path' => redirect('/'), via: :get
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
