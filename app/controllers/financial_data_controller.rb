@@ -10,6 +10,7 @@ class FinancialDataController < ApplicationController
   # GET /financial_data/1
   # GET /financial_data/1.json
   def show
+      @financial_datum = FinancialDatum.find(params[:id])
   end
 
   # GET /financial_data/new

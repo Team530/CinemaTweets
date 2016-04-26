@@ -1,10 +1,14 @@
 Rails.application.routes.draw do
   root 'welcome#index'
+
+  # For Data Navigation
   resources :movies
   resources :tweets
   resources :keywords
   resources :financial_data
 
+  # User gets redirected to root upon entering unknown routes
+    match '*path' => redirect('/'), via: :get
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

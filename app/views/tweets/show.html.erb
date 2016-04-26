@@ -1,4 +1,32 @@
+<div class="container">
 <p id="notice"><%= notice %></p>
+<a href="/tweets">
+    <h4>Back to Tweets</h4>
+</a>
 
-<%= link_to 'Edit', edit_tweet_path(@tweet) %> |
-<%= link_to 'Back', tweets_path %>
+<table class="table">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>number_of_favorites</th>
+            <th>number_of_retweets</th>
+            <th>number_of_tweets</th>
+            <th>keyword_id</th>
+            <th>date</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td><%= @tweet.id %></td>
+            <td><%= @tweet.number_of_favorites %></td>
+            <td><%= @tweet.number_of_retweets %></td>
+            <td><%= @tweet.number_of_tweets %></td>
+            <td>
+                <a href="/keywords/<%= @tweet.keyword_id %>"><%= @tweet.keyword_id %></a>
+            </td>
+            <td><%= @tweet.date %></td>
+        </tr>
+    </tbody>
+</table>
+</div>

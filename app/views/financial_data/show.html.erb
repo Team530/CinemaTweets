@@ -1,4 +1,32 @@
+<div class="container">
 <p id="notice"><%= notice %></p>
+<a href="/financial_data">
+    <h4>Back to Financial Data</h4>
+</a>
 
-<%= link_to 'Edit', edit_financial_datum_path(@financial_datum) %> |
-<%= link_to 'Back', financial_data_path %>
+<table class="table">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>num_theaters</th>
+            <th>gross_earnings</th>
+            <th>movie_id</th>
+            <th>date</th>
+            <th>daily_gross</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td><%= @financial_datum.id %></td>
+            <td><%= @financial_datum.num_theaters %></td>
+            <td><%= @financial_datum.gross_earnings %></td>
+            <td>
+                <a href="/movies/<%= @financial_datum.movie_id %>"><%= @financial_datum.movie_id %></a>
+            </td>
+            <td><%= @financial_datum.date %></td>
+            <td><%= @financial_datum.daily_gross %></td>
+        </tr>
+    </tbody>
+</table>
+</div>
