@@ -6,6 +6,10 @@ Rails.application.routes.draw do
   resources :tweets
   resources :keywords
   resources :financial_data
+  
+  get "/what" => "pages#what"
+  get "/who" => "pages#who"
+  get "/analysis" => "pages#analysis"
 
   # User gets redirected to root upon entering unknown routes
   match '*path' => redirect('/'), via: :get
