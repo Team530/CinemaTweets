@@ -141,7 +141,7 @@ def iterateKeywords(daysago)
 	if daysago >= 7
 		return
 	end
-	Keyword.select("keyword_phrase, id").each do |keyword|
+	Keyword.select("keyword_phrase, id").reverse.each do |keyword|
 	  keyword_id = keyword.id
 	  phrase = keyword.keyword_phrase
 	  q1 = getQueryDaysAgo(daysago, phrase)
