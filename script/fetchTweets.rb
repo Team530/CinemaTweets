@@ -68,11 +68,14 @@ def getData(result, id, date,  pos, neg)
 	fav = 0
 	ret = 0
 	count = result.count
+	puts count
+
 	result.each do |tweet|
 		fav += tweet.favorite_count
 		ret += tweet.retweet_count
 	end
-
+	puts fav
+	puts ret
 	createTweetData(fav, ret, count, id, date, pos, neg)
 end
 
