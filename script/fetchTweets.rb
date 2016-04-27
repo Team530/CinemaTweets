@@ -67,12 +67,13 @@ end
 def getData(result, id, date,  pos, neg)
 	fav = 0
 	ret = 0
-	count = result.count
-	puts count
-
+#	count = result.count
+	puts "count"
+	count = 0
 	result.each do |tweet|
 		fav += tweet.favorite_count
 		ret += tweet.retweet_count
+	count = count + 1
 	end
 	puts fav
 	puts ret
