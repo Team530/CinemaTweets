@@ -160,9 +160,9 @@ def iterateKeywords(daysago)
 
 	begin
 	  puts "begin"
-	  result1 = $client.search(q1, lang:"en")
-	  result2 = $client.search(q3, lang:"en").count
-	  result3 = $client.search(q2, lang:"en").count
+	  result1 = $client.search(q1, lang:"en", count:100)
+	  result2 = $client.search(q3, lang:"en", count:100).count
+	  result3 = $client.search(q2, lang:"en", count:100).count
 	  getData(result1, keyword_id, date, result2, result3)
 	  $success = false
 	rescue
