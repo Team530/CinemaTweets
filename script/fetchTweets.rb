@@ -161,28 +161,15 @@ def iterateKeywords(daysago)
 	begin
 	  puts "begin"
 	  result1 = $client.search(q1, lang:"en")
-	rescue 
-	switchClient
-	end
-	begin
-
 	  result2 = $client.search(q3, lang:"en").count
-	rescue
-	switchClient
-	end
-	begin
 	  result3 = $client.search(q2, lang:"en").count
-	rescue
-	switchClient
-	end
 	  getData(result1, keyword_id, date, result2, result3)
-#	end
 	  $success = false
-#	rescue
+	rescue
 
-#	switchClient
+	switchClient
 	
-#	end
+	end
 	end
 else
 	puts "tweet data exist"
