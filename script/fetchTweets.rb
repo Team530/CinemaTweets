@@ -74,9 +74,9 @@ def getData(result, id, date,  pos, neg)
 		fav += tweet.favorite_count
 		ret += tweet.retweet_count
 	count = count + 1
-        if count % 50 == 0
+        if count % 1000 == 0
 	puts "sleep"
-	sleep(60)
+	sleep(60*3)
 	end
 	end
 	puts fav
