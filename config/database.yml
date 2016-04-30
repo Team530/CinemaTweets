@@ -24,7 +24,10 @@ default: &default
 development:
   <<: *default
   database: cinema_tweet_development
-
+  username: <%= ENV['DATABASE_USER_NAME'] %>
+  password: <%= ENV['DATABASE_USER_PASSWORD'] %>
+  host: localhost
+  port: 5431
   # The specified database role being used to connect to postgres.
   # To create additional roles in postgres see `$ createuser --help`.
   # When left blank, postgres will use the default role. This is
@@ -57,8 +60,11 @@ development:
 # Do not set this db to the same as development or production.
 test:
   <<: *default
+  username: <%= ENV['DATABASE_USER_NAME'] %>
+  password: <%= ENV['DATABASE_USER_PASSWORD'] %>
   database: cinema_tweet_test
-
+  host: localhost
+  port: 5431
 # As with config/secrets.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
 # ever seen by anyone, they now have access to your database.
