@@ -1,0 +1,27 @@
+<div class="container">
+<p id="notice"><%= notice %></p>
+<a href="/movies">
+    <h4>Back to Movies</h4>
+</a>
+<table class="table">
+<thead>
+    <tr>
+        <th>id</th>
+        <th>name</th>
+        <th>release_date</th>
+        <th>genre</th>
+        <th>MPAA_rating</th>
+    </tr>
+</thead>
+
+<tbody>
+    <tr>
+        <td><%= @movie.id %></td>
+        <td><%= @movie.name %></td>
+        <td><%= @movie.release_date %></td>
+        <td><%= @movie.genre %></td>
+        <td><%= @movie.MPAA_rating %></td>
+    </tr>
+</tbody>
+</table>
+</div>

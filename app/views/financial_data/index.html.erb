@@ -1,0 +1,36 @@
+<div class="container">
+    <p id="notice"><%= notice %></p>
+
+    <h1>Listing Financial Data</h1>
+
+    <table class="table table-hover table-sm">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>num_theaters</th>
+                <th>gross_earnings</th>
+                <th>movie_id</th>
+                <th>date</th>
+                <th>daily_gross</th>
+                <th colspan="1"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% @financial_data.each do |financial_datum| %>
+            <tr>
+                <td><%= financial_datum.id %></td>
+                <td><%= financial_datum.num_theaters %></td>
+                <td><%= financial_datum.gross_earnings %></td>
+                <td>
+                    <a href="/movies/<%= financial_datum.movie_id %>"><%= financial_datum.movie_id %></a>
+                </td>
+                <td><%= financial_datum.date %></td>
+                <td><%= financial_datum.daily_gross %></td>
+                <td><%= link_to 'Show', financial_datum %></td>
+            </tr>
+            <% end %>
+        </tbody>
+    </table>
+    <br>
+</div>

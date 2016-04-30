@@ -1,0 +1,40 @@
+<div class="container">
+    <p id="notice"><%= notice %></p>
+
+    <h1>Listing Tweets</h1>
+
+    <table class="table table-hover table-sm">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>number_of_favorites</th>
+                <th>number_of_retweets</th>
+                <th>number_of_tweets</th>
+                <th>keyword_id</th>
+                <th>date</th>
+                <th>positive</th>
+                <th>negative</th>
+                <th colspan="1"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% @tweets.each do |tweet| %>
+            <tr>
+                <td><%= tweet.id %></td>
+                <td><%= tweet.number_of_favorites %></td>
+                <td><%= tweet.number_of_retweets %></td>
+                <td><%= tweet.number_of_tweets %></td>
+                <td>
+                    <a href="/keywords/<%= tweet.keyword_id %>"><%= tweet.keyword_id %></a>
+                </td>
+                <td><%= tweet.date %></td>
+                <td><%= tweet.positive %></td>
+                <td><%= tweet.negative %></td>
+                <td><%= link_to 'Show', tweet %></td>
+            </tr>
+            <% end %>
+        </tbody>
+    </table>
+    <br>
+</div>

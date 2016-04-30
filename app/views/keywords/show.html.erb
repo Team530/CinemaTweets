@@ -1,0 +1,28 @@
+<div class="container">
+    <p id="notice"><%= notice %></p>
+    <a href="/keywords">
+        <h4>Back to Keywords</h4>
+    </a>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>id</th>
+                <th>movie_id</th>
+                <th>keyword_phrase</th>
+                <th>is_hash_tag</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr>
+                <td><%= @keyword.id %></td>
+                <td>
+                    <a href="/movies/<%= @keyword.movie_id %>"><%= @keyword.movie_id %></a>
+                </td>
+                <td><%= @keyword.keyword_phrase %></td>
+                <td><%= @keyword.is_hash_tag %></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
