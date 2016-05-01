@@ -17,20 +17,12 @@
 
         <tbody>
             <% @movies.each do |movie| %>
-               <% @genres = movie.genres %>
+               <% @genre = movie.genres.first %>
             <tr>
                 <td><%= movie.id %></td>
                 <td><%= movie.name %></td>
                 <td><%= movie.release_date %></td>
-                <td>
-                   <% @genres.each do |genre| %>
-                     <% if genre == @genres[-1] %>
-                        <%= link_to genre.genre_name, genre %>
-                     <%else%>
-                        <%= link_to genre.genre_name + ',', genre %>
-                     <%end%>
-                  <%end%>
-                </td>
+                <td><%= link_to @genre.genre_name, @genre %></td>
                 <td><%= movie.MPAA_rating %></td>
                 <td><%= link_to 'Show', movie %></td>
             </tr>

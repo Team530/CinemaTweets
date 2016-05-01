@@ -11,7 +11,7 @@ class MoviesController < ApplicationController
     # GET /movies/1.json
     def show
         @movie = Movie.find(params[:id])
-        @genres = @movie.genres[0]
+        @genres = @movie.genres
     end
 
     # GET /movies/new

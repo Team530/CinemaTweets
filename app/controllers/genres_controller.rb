@@ -85,7 +85,7 @@ class GenresController < ApplicationController
       movie_array.each do |movie|
          genre_array = movie.genres
          genre_array.each do |genre|
-            if genre.genre_name != cur_genre
+            if genre.genre_name != cur_genre && !ret[0].include?(genre.genre_name)
                ret[0] << genre.genre_name
                ret[1] << genre.count
             end
