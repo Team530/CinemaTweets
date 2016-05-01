@@ -69,12 +69,14 @@ end
 
 <script type="text/javascript">
 // Our labels and three data series
-
+  var movie_id = <%=raw @keyword.movie_id %>;
   var x_axis = <%=raw @days%>;
   var y_axis = <%=raw @tweets_total%>;
   var y_axis2 = <%=raw tweets_change%>;
   var y_axis3 = <%=raw movie_gross_change%>;
   var y_axis4 = <%=raw movie_theater_change%>;
+  var y_axis5 = <%=raw @movie_gross%>;
+  var y_axis6 = <%=raw @movie_theater%>;
 
   var data = {
    labels: x_axis,
