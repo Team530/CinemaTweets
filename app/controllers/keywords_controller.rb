@@ -11,6 +11,19 @@ class KeywordsController < ApplicationController
   # GET /keywords/1.json
   def show
       @keyword = Keyword.find(params[:id])
+      @keyword_id = @keyword.id
+      tweets = Tweet.order('date asc')
+      days_arr =  tweets.where(keyword_id: @keyword_id).select(:date).map(&:date)
+      @days = days_arr.map {|item| item=item.strftime "%Y-%m-%d"}
+
+      @tweets_total = tweets.where(keyword_id: @keyword_id).select(:number_of_tweets).map(&:number_of_tweets)
+      @tweets_retweets = tweets.where(keyword_id: @keyword_id).select(:number_of_retweets).map(&:number_of_retweets)
+      movie = Movie.find(@keyword.movie_id)
+      movies = FinancialDatum.order('date asc').where("date >= ?", @days[0])
+      @movie_gross = movies.where(movie_id: movie.id).select(:gross_earnings).map(&:gross_earnings)
+      @movie_theater = movies.where(movie_id: movie.id).select(:num_theaters).map(&:num_theaters)
+
+
   end
 
   # GET /keywords/new
