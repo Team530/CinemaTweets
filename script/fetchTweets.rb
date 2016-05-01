@@ -67,23 +67,20 @@ end
 def getData(result, id, date,  pos, neg)
 	fav = 0
 	ret = 0
-#	count = result.count
-	#puts "count"+result.count
+
 	count = 0
 
 	result.each do |tweet|
 		fav += tweet.favorite_count
 		ret += tweet.retweet_count
 	count = count + 1
-        if count % 11000 == 0
-	puts "sleep"
-	for i in 0..15
-		puts "sleep"+i
-		sleep(60)
-	end
-	#sleep(60*15)
-	puts "sleep end"
-	#switchClient
+    if count % 10000 == 0
+		puts "sleep"
+		for i in 0..15
+			puts "sleep"+i
+			sleep(60)
+		end
+		puts "sleep end"
 	end
 	end
 	puts count
