@@ -11,6 +11,11 @@ class TweetsController < ApplicationController
   # GET /tweets/1.json
   def show
       @tweet = Tweet.find(params[:id])
+      @keyword_id = @tweet.keyword_id
+      tweets = Tweet.order('date asc')
+      @days =  tweets.where(keyword_id: @keyword_id).select(:date)
+      @tweets_total = tweets.where(keyword_id: @keyword_id).select(:number_of_tweets)
+      @tweets_retweets = tweets.where(keyword_id: @keyword_id).select(:number_of_retweets)
   end
 
   # GET /tweets/new
