@@ -25,9 +25,9 @@
                 <td>
                    <% @genres.each do |genre| %>
                      <% if genre == @genres[-1] %>
-                        <%= genre.genre_name %>
+                        <%= link_to genre.genre_name, genre %>
                      <%else%>
-                        <%= genre.genre_name + ',' %>
+                        <%= link_to genre.genre_name + ',', genre %>
                      <%end%>
                   <%end%>
                 </td>

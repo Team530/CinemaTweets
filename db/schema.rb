@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160430221541) do
+ActiveRecord::Schema.define(version: 20160501092549) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -62,6 +62,17 @@ ActiveRecord::Schema.define(version: 20160430221541) do
     t.datetime "created_at",                null: false
     t.datetime "updated_at",                null: false
     t.integer  "budget",       default: -1
+  end
+
+  create_table "tweet_per_movies", force: :cascade do |t|
+    t.integer  "number_of_favorites"
+    t.integer  "number_of_retweets"
+    t.integer  "number_of_tweets"
+    t.datetime "date"
+    t.integer  "positive"
+    t.integer  "negative"
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
   end
 
   create_table "tweets", force: :cascade do |t|

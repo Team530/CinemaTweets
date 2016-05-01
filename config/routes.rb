@@ -17,8 +17,9 @@ Rails.application.routes.draw do
   resources :keywords
   resources :financial_data
   resources :tweet_per_movies
+  resources :genres
 
-  
+
   get "/what" => "pages#what"
   get "/who" => "pages#who"
   get "/analysis" => "pages#analysis"
