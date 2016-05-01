@@ -68,8 +68,9 @@ def getData(result, id, date,  pos, neg)
 	fav = 0
 	ret = 0
 #	count = result.count
-	puts "count"
+	puts "count"+result.count
 	count = 0
+
 	result.each do |tweet|
 		fav += tweet.favorite_count
 		ret += tweet.retweet_count
@@ -77,6 +78,7 @@ def getData(result, id, date,  pos, neg)
         if count % 10000 == 0
 	puts "sleep"
 	sleep(60)
+	#switchClient
 	end
 	end
 	puts count
@@ -118,36 +120,12 @@ end
 
 getQueryDaysAgo(2, "abc")
 
-# begin 
-# 	puts client.search("zootopia since:2016-04-19 until:2016-04-20", lang:"en").count
-# 	puts client.search("zootopia :) since:2016-04-19 until:2016-04-20", lang:"en").count
-# 	puts client.search("zootopia :( since:2016-04-19 until:2016-04-20", lang:"en").count
-# rescue Twitter::Error::TooManyRequests
-# 	print "Too Many Requests"
-# end
-
-#puts client.search("zootopia :( since:2016-04-22 until:2016-04-23", lang:"en").count
-#puts client.search("zootopia since:2016-04-19 until:2016-04-20", lang:"en").count
-
-	#puts tweet.text
-#end
-
-#puts client.search("리듬타 since:2016-04-22 until:2016-04-23").count
-
-#puts client.search("리듬타 since:2016-04-21 until:2016-04-22").count
-#puts client.search("리듬타 since:2016-04-20 until:2016-04-21").count
-#puts client.search("리듬타 since:2016-04-19 until:2016-04-20").count
-
-	#puts tweet.text
-	#puts JSON.pretty_generate(tweet)
-
-#
 
 $success = true 
 
 def iterateKeywords(daysago) 
 	puts "iterate keywords"
-	if daysago >= 7
+	if daysago > 7
 		return
 	end
 	Keyword.select("keyword_phrase, id").reverse.each do |keyword|
