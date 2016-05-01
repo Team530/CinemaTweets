@@ -1,6 +1,6 @@
 class MoviesController < ApplicationController
     before_action :set_movie, only: [:show, :edit, :update, :destroy]
-
+    helper_method :convert_to_dollars
     # GET /movies
     # GET /movies.json
     def index
@@ -11,6 +11,7 @@ class MoviesController < ApplicationController
     # GET /movies/1.json
     def show
         @movie = Movie.find(params[:id])
+        @genres = @movie.genres
     end
 
     # GET /movies/new
@@ -72,5 +73,22 @@ class MoviesController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def movie_params
         params.fetch(:movie, {})
+    end
+
+    def convert_to_dollars(amount)
+      if amount == 0
+         return "-"
+      end
+      rev = amount.to_s.reverse
+      temp = ""
+      for i in 0 ... rev.size
+         if i% 3  == 0 && i != 0
+            temp <<  ',' + rev[i]
+         else
+            temp << rev[i]
+         end
+      end
+      temp << "$"
+      ret = temp.reverse
     end
 end
