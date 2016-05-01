@@ -7,7 +7,7 @@ def createKeyword(title, id)
 end
 
 
-File.open('keyword.txt').each do |line|
+File.open('script/keyword.txt').each do |line|
 	array = line.split(',')
 	puts array[0]
 	puts array[1]
