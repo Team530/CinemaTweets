@@ -75,6 +75,9 @@ def getData(result, id, date,  pos, neg)
 		fav += tweet.favorite_count
 		ret += tweet.retweet_count
 	count = count + 1
+	if count == 25000
+		break
+	end
     if count % 10000 == 0
 		puts "sleep"
 		i = 0
@@ -113,6 +116,7 @@ def getData(result, id, date,  pos, neg)
 	puts count
 	puts fav
 	puts ret
+
 	end
 	puts count
 	puts fav
