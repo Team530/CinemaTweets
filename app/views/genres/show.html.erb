@@ -1,4 +1,45 @@
 <p id="notice"><%= notice %></p>
 
+
+<% @movies.each do |movie| %>
+      <%= movie.name %>
+<% end %>
+
+
+<div class="ct-chart ct-golden-section" id="chart1"></div>
+
+<script type="text/javascript">
+var names = <%= raw @filtered_genre_names %>;
+var nums = <%= raw @filtered_genre_count %>
+
+var data = {
+  labels: names,
+  series: nums
+};
+
+var options = {
+  labelInterpolationFnc: function(value) {
+    return value[0]
+  }
+};
+
+var responsiveOptions = [
+  ['screen and (min-width: 640px)', {
+    chartPadding: 30,
+    labelOffset: 100,
+    labelDirection: 'explode',
+    labelInterpolationFnc: function(value) {
+      return value;
+    }
+  }],
+  ['screen and (min-width: 1024px)', {
+    labelOffset: 80,
+    chartPadding: 20
+  }]
+];
+
+new Chartist.Pie('.ct-chart', data, options, responsiveOptions);
+
+</script>
 <%= link_to 'Edit', edit_genre_path(@genre) %> |
 <%= link_to 'Back', genres_path %>

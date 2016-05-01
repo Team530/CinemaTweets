@@ -13,6 +13,11 @@ class GenresController < ApplicationController
   # GET /genres/1
   # GET /genres/1.json
   def show
+     @genre = Genre.find(params[:id])
+     @movies = @genre.movies
+     @filtered = filter_out(@genre.genre_name, @movies)
+     @filtered_genre_names = @filtered[0]
+     @filtered_genre_count = @filtered[1]
   end
 
   # GET /genres/new
@@ -73,5 +78,19 @@ class GenresController < ApplicationController
     # Never trust parameters from the scary internet, only allow the white list through.
     def genre_params
       params.fetch(:genre, {})
+    end
+
+    def filter_out(cur_genre, movie_array)
+      ret = [[],[]]
+      movie_array.each do |movie|
+         genre_array = movie.genres
+         genre_array.each do |genre|
+            if genre.genre_name != cur_genre
+               ret[0] << genre.genre_name
+               ret[1] << genre.count
+            end
+         end
+      end
+      return ret
     end
 end
