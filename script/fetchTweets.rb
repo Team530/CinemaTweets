@@ -81,7 +81,7 @@ def getData(result, id, date,  pos, neg)
 		puts "sleep"+i
 		sleep(60)
 	end
-	sleep(60*15)
+	#sleep(60*15)
 	puts "sleep end"
 	#switchClient
 	end
