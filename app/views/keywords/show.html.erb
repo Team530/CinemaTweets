@@ -29,6 +29,8 @@
             </tr>
         </tbody>
     </table>
+<p>keyword_id<%= @keyword_id %></p>
+<p>days<%= @days %></p>
 
     <div class="ct-chart ct-perfect-fourth"></div>
 </div>
@@ -65,12 +67,12 @@ var options = {
   // Y-Axis specific configuration
   axisY: {
     // Lets offset the chart a bit from the labels
-    offset: 40,
+    offset: 500,
     // The label interpolation function enables you to modify the values
     // used for the labels on each axis. Here we are converting the
     // values into million pound.
     labelInterpolationFnc: function(value) {
-      return '$' + value + 'm';
+      return  value;
     }
   }
 };
