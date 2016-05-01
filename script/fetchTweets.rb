@@ -68,7 +68,7 @@ def getData(result, id, date,  pos, neg)
 	fav = 0
 	ret = 0
 #	count = result.count
-	puts "count"+result.count
+	#puts "count"+result.count
 	count = 0
 
 	result.each do |tweet|
@@ -77,7 +77,7 @@ def getData(result, id, date,  pos, neg)
 	count = count + 1
         if count % 13000 == 0
 	puts "sleep"
-	sleep(60*5)
+	sleep(60*7)
 	#switchClient
 	end
 	end
