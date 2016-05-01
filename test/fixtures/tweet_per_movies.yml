@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  number_of_favorites: 1
+  number_of_retweets: 1
+  number_of_tweets: 1
+  date: 2016-05-01 04:25:49
+  positive: 1
+  negative: 1
+
+two:
+  number_of_favorites: 1
+  number_of_retweets: 1
+  number_of_tweets: 1
+  date: 2016-05-01 04:25:49
+  positive: 1
+  negative: 1
