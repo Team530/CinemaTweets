@@ -214,11 +214,30 @@ else
    end
 end
 
-ARGV.each do|a|
-	iterateKeywords(a.to_i)
-	puts a
+	iterateKeywords(6)
+puts 6
+	iterateKeywords(5)
+	puts 5
+
+	iterateKeywords(4)
+	puts 4
+
+	iterateKeywords(3)
+puts 3
+
+
+	iterateKeywords(2)
+	puts 2
+
+	iterateKeywords(1)
+puts 1
+puts "end"
+
+# ARGV.each do|a|
+# 	iterateKeywords(a.to_i)
+# 	puts a
  # puts "Argument: #{a}"
-end
+#end
 #iterateKeywords(2)
 
 #Keyword.select("keyword_phrase, id").each do |keyword|

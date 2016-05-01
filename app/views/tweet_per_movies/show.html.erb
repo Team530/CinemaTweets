@@ -1,2 +1,35 @@
-<h1>TweetPerMovies#show</h1>
-<p>Find me in app/views/tweet_per_movies/show.html.erb</p>
+<div class="container">
+<p id="notice"><%= notice %></p>
+<a href="/tweet_per_movies">
+    <h4>Back to Tweets</h4>
+</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>id</th>
+            <th>number_of_favorites</th>
+            <th>number_of_retweets</th>
+            <th>number_of_tweets</th>
+            <th>keyword_id</th>
+            <th>date</th>
+            <th>positive</th>
+            <th>negative</th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <tr>
+            <td><%= @tweet.id %></td>
+            <td><%= @tweet.number_of_favorites %></td>
+            <td><%= @tweet.number_of_retweets %></td>
+            <td><%= @tweet.number_of_tweets %></td>
+            <td>
+                <a href="/keywords/<%= @tweet.keyword_id %>"><%= @tweet.keyword_id %></a>
+            </td>
+            <td><%= @tweet.positive %></td>
+            <td><%= @tweet.negative %></td>
+        </tr>
+    </tbody>
+</table>
+</div>
