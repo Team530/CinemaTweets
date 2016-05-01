@@ -78,11 +78,36 @@ def getData(result, id, date,  pos, neg)
     if count % 10000 == 0
 		puts "sleep"
 		i = 0
-		while i <=15
-			puts "sleep "+i
-			sleep(60)
-			i=i+1
-		end
+		sleep(60)
+		puts "sleep1"
+		sleep(60)
+		puts "sleep2"
+		sleep(60)
+		puts "sleep3"
+		sleep(60)
+		puts "sleep4"
+		sleep(60)
+		puts "sleep5"
+		sleep(60)
+		puts "sleep6"
+		sleep(60)
+		puts "sleep7"
+		sleep(60)
+		puts "sleep8"
+		sleep(60)
+		puts "sleep9"
+		sleep(60)
+		puts "sleep10"
+		sleep(60)
+		puts "sleep11"
+		sleep(60)
+		puts "sleep12"
+		sleep(60)
+		puts "sleep13"
+		sleep(60)
+		puts "sleep14"
+		sleep(60)
+		puts "sleep15"
 		puts "sleep end"
 	end
 	end
