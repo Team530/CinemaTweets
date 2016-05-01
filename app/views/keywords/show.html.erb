@@ -1,5 +1,7 @@
 <div class="container">
     <p id="notice"><%= notice %></p>
+        <h1>Keyword, Movie $$$ Graph</h1>
+
     <a href="/keywords">
         <h4>Back to Keywords</h4>
     </a>
@@ -7,21 +9,23 @@
     <table class="table">
         <thead>
             <tr>
-                <th>id</th>
-                <th>movie_id</th>
-                <th>keyword_phrase</th>
-                <th>is_hash_tag</th>
+                <th>Keyword Phrase</th>
+                <th>Movie ID</th>
+                <th>Movie Name</th>
+
             </tr>
         </thead>
 
         <tbody>
             <tr>
-                <td><%= @keyword.id %></td>
+                <td><%= @keyword.keyword_phrase %></td>
                 <td>
                     <a href="/movies/<%= @keyword.movie_id %>"><%= @keyword.movie_id %></a>
                 </td>
-                <td><%= @keyword.keyword_phrase %></td>
-                <td><%= @keyword.is_hash_tag %></td>
+                <td>
+                <% movie = Movie.find(@keyword.movie_id) %>
+                    <a href="/movies/<%= @keyword.movie_id %>"><%= movie.name %></a>
+                </td>
             </tr>
         </tbody>
     </table>

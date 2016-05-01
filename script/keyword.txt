@@ -1,0 +1,46 @@
+494,April and the Extraordinary World,false
+495,Miracles from Heaven,false
+496,Star Wars: Episode VII - The Force Awakens,false
+496,Star Wars,false
+497,Mr. Right,false
+498,London Has Fallen,false
+499,Everybody Wants Some!!,false
+500,Race,false
+501,Meet the Blacks,false
+502,Eye in the Sky,false
+503,Eddie the Eagle,false
+504,Kung Fu Panda 3,false
+505,10 Cloverfield Lane,false
+506,Spotlight,false
+507,The Perfect Match,false
+508,Hardcore Henry,false
+509,Midnight Special,false
+510,Demolition,false
+511,Alvin and the Chipmunks: The Road Chip,false
+511,Alvin and the Chipmunks,false
+512,Hello, My Name Is Doris,false
+513,The Boss,false
+514,Gods of Egypt,false
+515,Triple 9,false
+516,My Big Fat Greek Wedding 2,false
+517,Whiskey Tango Foxtrot,false
+518,The Hateful Eight,false
+519,Saturday's Warrior,false
+520,Batman v Superman: Dawn of Justice,false
+520,Batman v Superman,false
+521,The Young Messiah,false
+522,Brooklyn,false
+523,Louder Than Bombs,false
+524,How to Be Single,false
+525,The Revenant,false
+526,Deadpool,false
+527,Zootopia,false
+528,Allegiant,false
+529,The 5th Wave,false
+530,Risen,false
+531,The Jungle Book,false
+532,Fan,false
+533,Criminal,false
+534,Sing Street,false
+535,Barbershop: The Next Cut,false
+535,Barbershop,false
