@@ -77,6 +77,10 @@ def getData(result, id, date,  pos, neg)
 	count = count + 1
         if count % 11000 == 0
 	puts "sleep"
+	for i in 0..15
+		puts "sleep"+i
+		sleep(60)
+	end
 	sleep(60*15)
 	puts "sleep end"
 	#switchClient
