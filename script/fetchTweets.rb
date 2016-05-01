@@ -65,6 +65,7 @@ def createTweetData(fav, ret, tweets, id, date, pos, neg)
 end
 
 def getData(result, id, date,  pos, neg)
+	puts "get Data"
 	fav = 0
 	ret = 0
 
@@ -77,7 +78,7 @@ def getData(result, id, date,  pos, neg)
     if count % 10000 == 0
 		puts "sleep"
 		i = 0
-		while i >=15
+		while i <=15
 			sleep(60)
 			i=i+1
 		end
