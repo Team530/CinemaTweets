@@ -76,9 +76,10 @@ def getData(result, id, date,  pos, neg)
 	count = count + 1
         if count % 10000 == 0
 	puts "sleep"
-	sleep(60*3)
+	sleep(60)
 	end
 	end
+	puts count
 	puts fav
 	puts ret
 	createTweetData(fav, ret, count, id, date, pos, neg)
