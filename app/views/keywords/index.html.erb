@@ -16,8 +16,9 @@
 
         <tbody>
             <% @keywords.each do |keyword| %>
-            <tr>
+            <tr><td>
                     <a href="/keywords/<%= keyword.id %>"><%= keyword.id %></a>
+                    </td>
                 <td>
                     <a href="/movies/<%= keyword.movie_id %>"><%= keyword.movie_id %></a>
                 </td>
