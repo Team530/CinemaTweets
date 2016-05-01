@@ -76,9 +76,10 @@ def getData(result, id, date,  pos, neg)
 	count = count + 1
     if count % 10000 == 0
 		puts "sleep"
-		for i in 0..15
-			puts "sleep"+i
+		i = 0
+		while i >=15
 			sleep(60)
+			i=i+1
 		end
 		puts "sleep end"
 	end
