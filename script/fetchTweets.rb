@@ -56,8 +56,8 @@ end
 
 
 def createTweetData(fav, ret, tweets, id, date, pos, neg)
-    unless Tweet.where("keyword_id = ? and date = ?", id, date).exists?
-       Tweet.create(number_of_favorites: fav, number_of_retweets: ret, number_of_tweets: tweets, keyword_id: id, date: date, positive: pos, negative: neg)
+    unless TweetPerMovie.where("keyword_id = ? and date = ?", id, date).exists?
+       TweetPerMovie.create(number_of_favorites: fav, number_of_retweets: ret, number_of_tweets: tweets, keyword_id: id, date: date, positive: pos, negative: neg)
     	puts "created"
     else
     	puts "exist"
@@ -173,7 +173,7 @@ def iterateKeywords(daysago)
 	  q3 = getPositiveQueryDaysAgo(daysago, phrase)
 	   t1 = $current - (60*60*24)*daysago
 	  date = (t1.strftime "%Y-%m-%d")
-	  unless Tweet.where("keyword_id = ? and date = ?", keyword_id, date).exists?
+	  unless TweetPerMovie.where("keyword_id = ? and date = ?", keyword_id, date).exists?
 	$success = true
 	i = 0
     while $success
