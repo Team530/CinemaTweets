@@ -110,6 +110,9 @@ def getData(result, id, date,  pos, neg)
 		puts "sleep15"
 		puts "sleep end"
 	end
+	puts count
+	puts fav
+	puts ret
 	end
 	puts count
 	puts fav
