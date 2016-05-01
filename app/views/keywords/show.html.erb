@@ -32,12 +32,49 @@
     <div class="ct-chart ct-perfect-fourth"></div>
         <div class="ct-chart2 ct-perfect-fourth"></div>
     </div>
-<% tweets = Tweet.find_by(keyword_id: @keyword.id) %>
+<% tweets_change = @tweets_total.clone
+tweets_change.each_with_index do |item, index|
+  if index != 0
+  tweets_change[index] = tweets_change[index] - @tweets_total[index-1]
+  tweets_change[index] = tweets_change[index]*1.0/@tweets_total[index-1]
+else
+  tweets_change[index] = 0
+end
+
+#  pouts "current_index: #{index}"
+end
+
+movie_gross_change = @movie_gross.clone
+movie_gross_change.each_with_index do |item, index|
+  if index != 0
+  movie_gross_change[index] = movie_gross_change[index] - @movie_gross[index-1]
+  movie_gross_change[index] = 100*movie_gross_change[index]*1.0/@movie_gross[index-1]
+else
+  movie_gross_change[index] = 0
+end
+end
+
+movie_theater_change = @movie_theater.clone
+movie_theater_change.each_with_index do |item, index|
+  if index != 0
+  movie_theater_change[index] = movie_theater_change[index] - @movie_theater[index-1]
+  movie_theater_change[index] = 10*movie_theater_change[index]*1.0/@movie_theater[index-1]
+else
+  movie_theater_change[index] = 0
+end
+end
+
+
+ %>
+
 <script type="text/javascript">
 // Our labels and three data series
 
   var x_axis = <%=raw @days%>;
   var y_axis = <%=raw @tweets_total%>;
+  var y_axis2 = <%=raw tweets_change%>;
+  var y_axis3 = <%=raw movie_gross_change%>;
+  var y_axis4 = <%=raw movie_theater_change%>;
 
   var data = {
    labels: x_axis,
@@ -63,7 +100,6 @@ var options = {
   // Y-Axis specific configuration
   axisY: {
     // Lets offset the chart a bit from the labels
-    offset: 500,
     // The label interpolation function enables you to modify the values
     // used for the labels on each axis. Here we are converting the
     // values into million pound.
@@ -75,6 +111,45 @@ var options = {
 
 // All you need to do is pass your configuration as third parameter to the chart function
 new Chartist.Line('.ct-chart', data, options);
+// Our labels and three data series
+
+  var x_axis2 = <%=raw @days%>;
+
+  var data2 = {
+   labels: x_axis2,
+     series: [
+         y_axis2, y_axis3, y_axis4
+    ]
+ };
+
+
+// We are setting a few options for our chart and override the defaults
+var options = {
+  // Don't draw the line chart points
+  showPoint: false,
+  // Disable line smoothing
+  lineSmooth: false,
+  // X-Axis specific configuration
+  axisX: {
+    // We can disable the grid for this axis
+    showGrid: false,
+    // and also don't show the label
+    showLabel: true
+  },
+  // Y-Axis specific configuration
+  axisY: {
+    // Lets offset the chart a bit from the labels
+    // The label interpolation function enables you to modify the values
+    // used for the labels on each axis. Here we are converting the
+    // values into million pound.
+    labelInterpolationFnc: function(value) {
+      return  value+"%";
+    }
+  }
+};
+
+// All you need to do is pass your configuration as third parameter to the chart function
+new Chartist.Line('.ct-chart2', data2, options);
 </script>
 
 

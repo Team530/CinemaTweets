@@ -18,6 +18,7 @@ class KeywordsController < ApplicationController
 
       @tweets_total = tweets.where(keyword_id: @keyword_id).select(:number_of_tweets).map(&:number_of_tweets)
       @tweets_retweets = tweets.where(keyword_id: @keyword_id).select(:number_of_retweets).map(&:number_of_retweets)
+      
       movie = Movie.find(@keyword.movie_id)
       movies = FinancialDatum.order('date asc').where("date >= ?", @days[0])
       @movie_gross = movies.where(movie_id: movie.id).select(:gross_earnings).map(&:gross_earnings)
