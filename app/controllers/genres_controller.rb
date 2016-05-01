@@ -5,6 +5,9 @@ class GenresController < ApplicationController
   # GET /genres.json
   def index
     @genres = Genre.all
+    @genre_names = @genres.pluck(:genre_name)
+    @genre_counts = @genres.pluck(:count)
+
   end
 
   # GET /genres/1

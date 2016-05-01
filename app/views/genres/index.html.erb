@@ -21,3 +21,44 @@
       <% end %>
     </tbody>
 </table>
+
+
+
+<div class="ct-chart ct-golden-section" id="chart1"></div>
+
+<script>
+  // Initialize a Line chart in the container with the ID chart1
+  var x_axis = <%=raw @genre_names%>;
+  var y_axis = <%=raw @genre_counts%>;
+  var data = {
+   labels: x_axis,
+     series: [
+        y_axis
+   ]
+ };
+
+ var options = {
+    axisY: {onlyInteger: true}
+ };
+
+ var responsiveOptions = [
+   ['screen and (min-width: 641px) and (max-width: 1024px)', {
+     seriesBarDistance: 10,
+     axisX: {
+       labelInterpolationFnc: function (value) {
+         return value;
+       }
+     }
+   }],
+   ['screen and (max-width: 640px)', {
+     seriesBarDistance: 5,
+     axisX: {
+       labelInterpolationFnc: function (value) {
+         return value[0];
+       }
+     }
+   }]
+ ];
+
+ new Chartist.Bar('.ct-chart', data, options, responsiveOptions);
+</script>
