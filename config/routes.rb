@@ -1,4 +1,14 @@
 Rails.application.routes.draw do
+  get 'tweet_per_movies/index'
+
+  get 'tweet_per_movies/show'
+
+  get 'tweet_per_movies/new'
+
+  get 'tweet_per_movies/edit'
+
+  get 'tweet_per_movies/index'
+
   root 'welcome#index'
 
   # For Data Navigation
@@ -6,6 +16,8 @@ Rails.application.routes.draw do
   resources :tweets
   resources :keywords
   resources :financial_data
+  resources :tweet_per_movies
+
   
   get "/what" => "pages#what"
   get "/who" => "pages#who"
