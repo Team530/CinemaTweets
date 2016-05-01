@@ -79,6 +79,7 @@ def getData(result, id, date,  pos, neg)
 		puts "sleep"
 		i = 0
 		while i <=15
+			puts "sleep "+i
 			sleep(60)
 			i=i+1
 		end
