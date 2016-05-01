@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160423050335) do
+ActiveRecord::Schema.define(version: 20160430221541) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,23 @@ ActiveRecord::Schema.define(version: 20160423050335) do
 
   add_index "financial_data", ["movie_id"], name: "index_financial_data_on_movie_id", using: :btree
 
+  create_table "genre_tags", force: :cascade do |t|
+    t.integer  "genre_id"
+    t.integer  "movie_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  add_index "genre_tags", ["genre_id"], name: "index_genre_tags_on_genre_id", using: :btree
+  add_index "genre_tags", ["movie_id"], name: "index_genre_tags_on_movie_id", using: :btree
+
+  create_table "genres", force: :cascade do |t|
+    t.integer  "count"
+    t.string   "genre_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "keywords", force: :cascade do |t|
     t.integer  "movie_id"
     t.string   "keyword_phrase"
@@ -41,10 +58,10 @@ ActiveRecord::Schema.define(version: 20160423050335) do
   create_table "movies", force: :cascade do |t|
     t.string   "name"
     t.datetime "release_date"
-    t.string   "genre"
     t.string   "MPAA_rating"
-    t.datetime "created_at",   null: false
-    t.datetime "updated_at",   null: false
+    t.datetime "created_at",                null: false
+    t.datetime "updated_at",                null: false
+    t.integer  "budget",       default: -1
   end
 
   create_table "tweets", force: :cascade do |t|

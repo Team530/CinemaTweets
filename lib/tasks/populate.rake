@@ -11,34 +11,83 @@ namespace :db do
 
             m_n = nil
             r_d = nil
-            genre = nil
+            genres = nil
             m_r = nil
+            budget = nil
+            r_t = nil
             case_num = 0
 
             movie_file.each_line do |line|
                if line.blank?
-                  unless Movie.exists?(name: m_n)
+
+                  budget = budget == "N/A" ?  0 : budget
+                  genres = genres.split(/\s*,\s*/)
+
+                  genres.each do |genre|
+                     unless Genre.exists?(genre_name: genre)
+                        Genre.create(count: 0,
+                                     genre_name: genre).valid?
+                     end
+                  end
+
+                  if Movie.exists?(name: m_n)
+                     movie_id = Movie.find_by(name: m_n).id
+                     unless GenreTag.exists?(movie_id: movie_id)
+                        genres.each do |genre|
+                           genre_model = Genre.find_by(genre_name: genre)
+                           genre_id = genre_model.id
+                           count = genre_model.count
+                           GenreTag.create(movie_id: movie_id,
+                                           genre_id: genre_id).valid?
+
+                           count =  count + 1
+                           Genre.update(genre_id, count: count)
+                        end
+                     end
+
+                  else
                      r_d = r_d.split(/\s*-\s*/)
                      Movie.create(name: m_n,
                                   release_date: DateTime.new(r_d[0].to_i,
                                                              r_d[1].to_i,
                                                              r_d[2].to_i),
-                                 genre: genre,
-                                 MPAA_rating: m_r).valid?
+                                 MPAA_rating: m_r,
+                                 budget: budget).valid?
+                     movie_id = Movie.find_by(name: m_n).id
+                     genres.each do |genre|
+                        genre_model = Genre.find_by(genre_name: genre)
+                        genre_id = genre_model.id
+                        count = genre_model.count
+                        GenreTag.create(movie_id: movie_id,
+                                        genre_id: genre_id).valid?
+
+                        count =  count + 1
+                        Genre.update(genre_id, count: count)
+
+                     end
                   end
+                  m_n = nil
+                  r_d = nil
+                  genres = nil
+                  m_r = nil
+                  budget = nil
+                  r_t = nil
                   case_num = 0
                else
 
-                  #Case 0 Movie name in; Variable: movie_name
                   case case_num
                   when 0
-                     m_n = line
+                     m_n = line.chomp
                   when 1
-                     r_d  = line
+                     r_d  = line.chomp
                   when 2
-                     genre = line
+                     genres = line.chomp
                   when 3
-                     m_r = line
+                     m_r = line.chomp
+                  when 4
+                     budget = line.chomp
+                  when 5
+                     r_t = line.chomp
                   else
                     "You gave me #{a} in Movie Data -- I have no idea what to do with that."
                   end
@@ -73,14 +122,14 @@ namespace :db do
                                                               date_array[1].to_i,
                                                               date_array[2].to_i),
                                            daily_gross: d_g.to_i).valid?
-                      n_t = nil
-                      g_e = nil
-                      movie_name = nil
-                      d_g = nil
-                      date = nil
-                      case_num = 0
-                  end
 
+                  end
+                  case_num = 0
+                  n_t = nil
+                  g_e = nil
+                  movie_name = nil
+                  d_g = nil
+                  date = nil
                else
 
                   #Case 0 Number of theaters the movie is in; Variable: n_t
@@ -90,15 +139,15 @@ namespace :db do
                   #Case 4 Day that the parsed data was scanned; Varaible: date
                   case case_num
                   when 0
-                     n_t = line
+                     n_t = line.chomp
                   when 1
-                     g_e = line
+                     g_e = line.chomp
                   when 2
-                     movie_name = line
+                     movie_name = line.chomp
                   when 3
-                     d_g = line
+                     d_g = line.chomp
                   when 4
-                     date = line
+                     date = line.chomp
                   else
                     "You gave me #{a} in Financial Data -- I have no idea what to do with that."
                   end

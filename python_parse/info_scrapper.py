@@ -70,6 +70,8 @@ class ScrapeInfo(object):
                       str(movie_info['release_date'][0]) + "\n")
             f_m.write(', '.join(str(x) for x in movie_info['genre'])  + "\n")
             f_m.write(str(movie_info['MPAA_rating'])  + "\n")
+            f_m.write(str(movie_info['budget'])  + "\n")
+            f_m.write(str(movie_info['run_time'])  + "\n")
             f_m.write("\n")
 
             f_f.write(str(movie_info['num_theaters']) + "\n")
@@ -86,7 +88,7 @@ class ScrapeInfo(object):
 
     def main(self):
         count = 0
-        while count < 14:
+        while count < 28:
             print("Parsing Data for: " + self.cur_search_date.strftime("%d/%m/%Y"))
             soup_data = self.getSoupData()
             self.parseData(soup_data)
