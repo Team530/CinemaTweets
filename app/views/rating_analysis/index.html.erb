@@ -1,2 +1,82 @@
-<h1>RatingAnalysis#index</h1>
-<p>Find me in app/views/rating_analysis/index.html.erb</p>
+<div class="container">
+<p id="notice"><%= notice %></p>
+
+
+
+
+
+<h1>Rating Distribution of Movies Popular In Twitter</h2>
+
+<div class="ct-chart ct-golden-section" id="chart1"></div>
+</div>
+<script type="text/javascript">
+var names = <%= raw @MPAA_rating %>;
+var nums = <%= raw @rating_arr %>
+
+var data = {
+  labels: names,
+  series: nums
+};
+
+var options = {
+  labelInterpolationFnc: function(value) {
+    return value[0]
+  }
+};
+
+var responsiveOptions = [
+  ['screen and (min-width: 640px)', {
+    chartPadding: 30,
+    labelOffset: 100,
+    labelDirection: 'explode',
+    labelInterpolationFnc: function(value) {
+      return value;
+    }
+  }],
+  ['screen and (min-width: 1024px)', {
+    labelOffset: 80,
+    chartPadding: 20
+  }]
+];
+
+new Chartist.Pie('.ct-chart', data, options, responsiveOptions);
+
+</script>
+
+<h1>Rating Distribution of Movies Popular In Theater</h2>
+
+<div class="ct-chart2 ct-golden-section" id="chart1"></div>
+</div>
+<script type="text/javascript">
+var names = <%= raw @MPAA_rating %>;
+var nums = <%= raw @rating_arr2 %>
+
+var data = {
+  labels: names,
+  series: nums
+};
+
+var options = {
+  labelInterpolationFnc: function(value) {
+    return value[0]
+  }
+};
+
+var responsiveOptions = [
+  ['screen and (min-width: 640px)', {
+    chartPadding: 30,
+    labelOffset: 100,
+    labelDirection: 'explode',
+    labelInterpolationFnc: function(value) {
+      return value;
+    }
+  }],
+  ['screen and (min-width: 1024px)', {
+    labelOffset: 80,
+    chartPadding: 20
+  }]
+];
+
+new Chartist.Pie('.ct-chart2', data, options, responsiveOptions);
+
+</script>
