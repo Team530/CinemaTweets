@@ -1,5 +1,20 @@
 Rails.application.routes.draw do
+  get 'tweet_ranking/index'
+
+  get 'tweet_ranking/show'
+
+  get "tweet_ranking", :to => 'tweet_ranking#index'
+
+
+  get 'gross_ranking/index'
+
+  get 'gross_ranking/show'
+
+  get "gross_ranking", :to => 'gross_ranking#index'
+
   get 'tweet_per_movies/index'
+
+
 
   get 'tweet_per_movies/show'
 
@@ -18,6 +33,7 @@ Rails.application.routes.draw do
   resources :financial_data
   resources :tweet_per_movies
   resources :genres
+
 
 
   get "/what" => "pages#what"
