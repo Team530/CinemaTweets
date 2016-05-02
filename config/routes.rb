@@ -1,4 +1,16 @@
 Rails.application.routes.draw do
+  get 'correlation_analysis/index'
+
+  get "correlation_analysis", :to => 'correlation_analysis#index'
+
+  get 'genre_analysis/index'
+
+  get "genre_analysis", :to => 'genre_analysis#index'
+
+  get 'rating_analysis/index'
+
+  get "rating_analysis", :to => 'rating_analysis#index'
+
   get 'tweet_ranking/index'
 
   get 'tweet_ranking/show'
