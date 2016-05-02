@@ -10,7 +10,7 @@ class GenreAnalysisController < ApplicationController
 	for item in @tweets
   		@top_ten_tweets.push(tweets.where("date = ?", item).limit(10))
   	end
-  	
+
 
   end
 end
