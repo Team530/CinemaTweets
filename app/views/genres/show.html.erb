@@ -35,11 +35,10 @@
 
 <%if @filtered_genre_names.length > 0%>
    <div class="ct-chart ct-golden-section" id="chart1"></div>
-   </div>
+
    <script type="text/javascript">
    var names = <%= raw @filtered_genre_names %>;
    var nums = <%= raw @filtered_genre_count %>
-
    var data = {
      labels: names,
      series: nums
@@ -72,3 +71,4 @@
 <%end%>
 <%= link_to 'Edit', edit_genre_path(@genre) %> |
 <%= link_to 'Back', genres_path %>
+   </div>

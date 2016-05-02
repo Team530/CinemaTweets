@@ -16,7 +16,7 @@ class MoviesController < ApplicationController
         tweets = Tweet.order('date asc')
         days_arr =  tweets.where(keyword_id: keyword.id).select(:date).map(&:date)
         @days = days_arr.map {|item| item=item.strftime "%Y-%m-%d"}
-        movies = FinancialDatum.order('date asc').where("date >= ?", @days[0])
+        movies = FinancialDatum.order('date asc').where("date >= ?", @movie.release_date)
         @movie_gross = movies.where(movie_id: @movie.id).select(:gross_earnings).map(&:gross_earnings)
         @movie_theater = movies.where(movie_id: @movie.id).select(:num_theaters).map(&:num_theaters)
     end

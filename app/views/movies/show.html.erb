@@ -61,9 +61,10 @@
   var x_axis = <%=raw @days%>;
   var y_axis = <%=raw @movie_gross%>;
   var budget = <%=raw @movie.budget%>;
-
+  console.log(x_axis);
+  console.log(y_axis);
   var data;
-
+  console.log(x_axis.length);
   if(budget == 0)
   {
      data = {
