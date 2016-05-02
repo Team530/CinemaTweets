@@ -1,47 +1,74 @@
 <div class="container">
 <p id="notice"><%= notice %></p>
 
+ <table class="table  table-sm">
+     <thead>
+        <tr>
+           <th colspan="1"></th>
+           <th colspan="1"></th>
+           <th colspan="1"></th>
+        </tr>
+     </thead>
 
-<% @movies.each do |movie| %>
-      <%= movie.name %>
-<% end %>
+     <tbody>
+        <%index = 0%>
+        <%while index < @movies.length%>
+        <%count = 0%>
+        <tr>
+         <%while count < 3%>
+            <% if index < @movies.length%>
+               <td><%= link_to @movies[index].name, @movies[index] %></td>
+               <%count = count + 1%>
+               <%index = index + 1%>
+            <%else%>
+               <td></td>
+               <%count = count + 1%>
+            <%end%>
+         <%end%>
+         </tr>
+        <%end%>
+     </tbody>
+ </table>
 
-<h1>Associated Movies</h2>
 
-<div class="ct-chart ct-golden-section" id="chart1"></div>
-</div>
-<script type="text/javascript">
-var names = <%= raw @filtered_genre_names %>;
-var nums = <%= raw @filtered_genre_count %>
+<h1>Associated Genres</h2>
 
-var data = {
-  labels: names,
-  series: nums
-};
+<%if @filtered_genre_names.length > 0%>
+   <div class="ct-chart ct-golden-section" id="chart1"></div>
+   </div>
+   <script type="text/javascript">
+   var names = <%= raw @filtered_genre_names %>;
+   var nums = <%= raw @filtered_genre_count %>
 
-var options = {
-  labelInterpolationFnc: function(value) {
-    return value[0]
-  }
-};
+   var data = {
+     labels: names,
+     series: nums
+   };
 
-var responsiveOptions = [
-  ['screen and (min-width: 640px)', {
-    chartPadding: 30,
-    labelOffset: 100,
-    labelDirection: 'explode',
-    labelInterpolationFnc: function(value) {
-      return value;
-    }
-  }],
-  ['screen and (min-width: 1024px)', {
-    labelOffset: 80,
-    chartPadding: 20
-  }]
-];
+   var options = {
+     labelInterpolationFnc: function(value) {
+       return value[0]
+     }
+   };
 
-new Chartist.Pie('.ct-chart', data, options, responsiveOptions);
+   var responsiveOptions = [
+     ['screen and (min-width: 640px)', {
+       chartPadding: 30,
+       labelOffset: 100,
+       labelDirection: 'explode',
+       labelInterpolationFnc: function(value) {
+         return value;
+       }
+     }],
+     ['screen and (min-width: 1024px)', {
+       labelOffset: 80,
+       chartPadding: 20
+     }]
+   ];
 
-</script>
+   new Chartist.Pie('.ct-chart', data, options, responsiveOptions);
+
+   </script>
+<%end%>
 <%= link_to 'Edit', edit_genre_path(@genre) %> |
 <%= link_to 'Back', genres_path %>

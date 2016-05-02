@@ -113,16 +113,19 @@ namespace :db do
                   if movie_object.nil?
                      puts "Unable to locate the following movie title: #{movie_name}"
                   else
-                     m_i = movie_object.id
                      date_array = date.split(/\s*-\s*/)
-                     FinancialDatum.create(num_theaters: n_t.to_i,
-                                           gross_earnings: g_e.to_i,
-                                           movie_id: m_i,
-                                           date: DateTime.new(date_array[0].to_i,
-                                                              date_array[1].to_i,
-                                                              date_array[2].to_i),
-                                           daily_gross: d_g.to_i).valid?
+                     date_value = DateTime.new(date_array[0].to_i,
+                                        date_array[1].to_i,
+                                        date_array[2].to_i)
+                     unless FinancialDatum.exists?(movie_id: m_i, date: date_value)
+                        m_i = movie_object.id
 
+                        FinancialDatum.create(num_theaters: n_t.to_i,
+                                              gross_earnings: g_e.to_i,
+                                              movie_id: m_i,
+                                              date: date_value,
+                                              daily_gross: d_g.to_i).valid?
+                     end
                   end
                   case_num = 0
                   n_t = nil

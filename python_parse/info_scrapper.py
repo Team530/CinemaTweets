@@ -36,6 +36,7 @@ class ScrapeInfo(object):
         self.driver = webdriver.Firefox(profile)
         self.driver.implicitly_wait(3)
         #http://www.the-numbers.com/box-office-chart/daily/2016/04/19
+        # - datetime.timedelta(29)
         self.cur_search_date = self.cur_search_date
         start = self.goToDate()
         self.driver.get(start)
@@ -88,7 +89,7 @@ class ScrapeInfo(object):
 
     def main(self):
         count = 0
-        while count < 28:
+        while count < 14:
             print("Parsing Data for: " + self.cur_search_date.strftime("%d/%m/%Y"))
             soup_data = self.getSoupData()
             self.parseData(soup_data)
