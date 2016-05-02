@@ -12,6 +12,10 @@
         <th>genre</th>
         <th>MPAA_rating</th>
         <th>Budget</th>
+        <% if @movie.budget != 0%>
+           <th>Total Gross</th>
+           <th>Profit Margin</th>
+        <%end%>
     </tr>
 </thead>
 
@@ -31,6 +35,20 @@
         </td>
         <td><%= @movie.MPAA_rating %></td>
         <td><%= convert_to_dollars(@movie.budget) %></td>
+        <% if @movie.budget != 0 %>
+           <td><%= convert_to_dollars(@movie_gross.last) %></td>
+           <td>
+              <% if @movie.budget > @movie_gross.last %>
+               <span style="color:red">
+                  -<%= (Float(@movie_gross.last)/Float(@movie.budget)).round(2) %>%
+               </span>
+              <%else%>
+              <span style="color:green">
+                 +<%= (Float(@movie_gross.last)/Float(@movie.budget)).round(2) %>%
+              </span>
+              <%end%>
+           </td>
+        <%end%>
     </tr>
 </tbody>
 </table>
@@ -42,14 +60,34 @@
 
   var x_axis = <%=raw @days%>;
   var y_axis = <%=raw @movie_gross%>;
+  var budget = <%=raw @movie.budget%>;
 
-  var data = {
-   labels: x_axis,
-     series: [
-        y_axis
-    ]
- };
+  var data;
 
+  if(budget == 0)
+  {
+     data = {
+     labels: x_axis,
+        series: [
+          y_axis
+      ]
+   };
+ }
+ else
+ {
+    var budget_array = [];
+    for(var i = 0; i < y_axis.length; i++)
+    {
+      budget_array.push(budget);
+   }
+    data = {
+     labels: x_axis,
+      series: [
+          y_axis,
+          budget_array
+     ]
+   };
+ }
 
 // We are setting a few options for our chart and override the defaults
 var options = {
@@ -68,7 +106,7 @@ var options = {
   axisY: {
 
     labelInterpolationFnc: function(value) {
-      return  value;
+      return  "$"+ value;
     }
   }
 };
