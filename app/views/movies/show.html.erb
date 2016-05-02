@@ -40,7 +40,7 @@
            <td>
               <% if @movie.budget > @movie_gross.last %>
                <span style="color:red">
-                  -<%= (Float(@movie_gross.last)/Float(@movie.budget)).round(2) %>%
+                  -<%= ( (Float(@movie_gross.last)/Float(@movie.budget))*Float(100)).round(2) %>%
                </span>
               <%else%>
               <span style="color:green">
