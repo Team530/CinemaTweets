@@ -1,0 +1,41 @@
+<div class="container">
+    <p id="notice"><%= notice %></p>
+
+    <h1>Daily Tweet Ranking</h1>
+    <% @days.each do |day| %>
+    <table class="table table-hover table-sm">
+      <caption><%= day.strftime "%Y-%m-%d" %></caption>
+
+        <thead>
+            <tr>
+                <th>Keyword</th>
+                <th>Movie</th>
+                <th>genre</th>
+                <th>MPAA_rating</th>
+                <th>Number of Tweets</th>
+                <th>Number of Retweets</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% @tweets.where("date = ?", day).order("number_of_tweets DESC").limit(10).each do |tweet_data| %>
+               <% keyword = Keyword.find(tweet_data.keyword_id) %>
+               <% movie = Movie.find(keyword.movie_id) %>
+               <% @genre = movie.genres.first %>
+
+            <tr>
+                <td><%= keyword.keyword_phrase %></td>
+                <td><%= movie.name %></td>
+                <td><%= link_to @genre.genre_name, @genre %></td>
+                <td><%= movie.MPAA_rating %></td>
+                <td><%= tweet_data.number_of_tweets %></td>
+				<td><%= tweet_data.number_of_retweets %></td>
+            </tr>
+                <% end %>
+
+        </tbody>
+    </table>
+    <% end %>
+
+    <br>
+</div>

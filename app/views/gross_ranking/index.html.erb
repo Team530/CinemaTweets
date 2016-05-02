@@ -1,0 +1,37 @@
+<div class="container">
+    <p id="notice"><%= notice %></p>
+
+    <h1>Daily Gross Ranking</h1>
+    <% @days.each do |day| %>
+    <table class="table table-hover table-sm">
+      <caption><%= day.strftime "%Y-%m-%d" %></caption>
+
+        <thead>
+            <tr>
+                <th>Movie Name</th>
+                <th>genre</th>
+                <th>MPAA_rating</th>
+                <th>Gross</th>
+                <th colspan="1"></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <% @gross.where("date = ?", day).order("daily_gross  DESC").limit(10).each do |movie_data| %>
+               <% movie = Movie.find(movie_data.movie_id) %>
+               <% @genre = movie.genres.first %>
+
+            <tr>
+                <td><%= movie.name %></td>
+                <td><%= link_to @genre.genre_name, @genre %></td>
+                <td><%= movie.MPAA_rating %></td>
+                <td><%= movie_data.daily_gross %></td>
+            </tr>
+                <% end %>
+
+        </tbody>
+    </table>
+    <% end %>
+
+    <br>
+</div>
