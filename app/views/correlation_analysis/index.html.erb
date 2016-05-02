@@ -1,2 +1,46 @@
-<h1>CorrelationAnalysis#index</h1>
-<p>Find me in app/views/correlation_analysis/index.html.erb</p>
+<div class="container">
+    <h1 class="text-center">Number of Overlapping Movies</h1>
+    <h2 class="text-center">Movies Popular in Twitter vs Movies Popular in Theaters</h2>
+
+    <div class="ct-chart ct-perfect-fourth"></div>
+</div>
+
+<script type="text/javascript">
+  var y_axis = <%= raw @movie_count %>;
+
+// Our labels and three data series
+var data = {
+  labels: <%= raw @days_format %>,
+  series: [
+        y_axis
+    ]
+};
+
+// We are setting a few options for our chart and override the defaults
+var options = {
+  // Don't draw the line chart points
+  showPoint: false,
+  // Disable line smoothing
+  lineSmooth: false,
+  // X-Axis specific configuration
+  axisX: {
+    // We can disable the grid for this axis
+    showGrid: false,
+    // and also don't show the label
+    showLabel: true
+  },
+  // Y-Axis specific configuration
+  axisY: {
+    // Lets offset the chart a bit from the labels
+    // The label interpolation function enables you to modify the values
+    // used for the labels on each axis. Here we are converting the
+    // values into million pound.
+    labelInterpolationFnc: function(value) {
+      return value;
+    }
+  }
+};
+
+// All you need to do is pass your configuration as third parameter to the chart function
+new Chartist.Line('.ct-chart', data, options);
+</script>
